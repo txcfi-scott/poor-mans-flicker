@@ -139,6 +139,23 @@ fi
 fnm use 22 || fail "Could not activate Node.js 22"
 success "Using Node.js $(node --version)"
 
+# Add npm global bin directory to PATH for this session
+NPM_GLOBAL_BIN="$(npm config get prefix)/bin"
+export PATH="$NPM_GLOBAL_BIN:$PATH"
+
+# Add npm global bin to shell profile if not already there
+if [[ -n "$SHELL_PROFILE" ]]; then
+    if ! grep -q 'npm config get prefix' "$SHELL_PROFILE" 2>/dev/null; then
+        info "Adding npm global bin to $SHELL_PROFILE..."
+        {
+            echo ""
+            echo "# npm global bin"
+            echo 'export PATH="$(npm config get prefix)/bin:$PATH"'
+        } >> "$SHELL_PROFILE"
+        success "npm global bin added to shell profile"
+    fi
+fi
+
 # ---------------------------------------------------------------------------
 # 4. Claude Code CLI
 # ---------------------------------------------------------------------------
@@ -213,4 +230,7 @@ printf "  ${BOLD}cd ~/poor-mans-flicker${NC}\n"
 printf "  ${BOLD}claude${NC}\n"
 echo ""
 printf "Then just tell Claude what you want to change!\n"
+echo ""
+echo "Run this to activate everything in your current terminal:"
+echo "  source ~/.zshrc"
 echo ""
