@@ -165,6 +165,33 @@ Font:         Inter (headings + body)
 - To change the site title, description, colors — use the admin UI or update via API
 - To add/remove albums — use the admin UI at /admin/albums
 
+## Safety Rules for Site Management
+
+These rules apply when managing photos and albums through Claude Code sessions.
+
+### Before Any Delete Operation
+1. **Always confirm** with the user what specifically should be deleted
+2. **List all affected items** before proceeding (album name, photo count, photo names)
+3. **Remind the user** that deleted items go to trash and can be recovered for 30 days
+4. **Never** delete more than what was explicitly requested
+
+### Before Any Schema/Database Change
+1. Back up the database first: `turso db shell poor-mans-flicker .dump > backup-$(date +%Y%m%d).sql`
+2. Verify the backup file is non-empty before proceeding
+3. Explain what the migration will change in plain English
+
+### Prohibited Actions
+- **Never** run raw SQL DELETE without a WHERE clause
+- **Never** bypass the soft-delete system by deleting R2 objects directly
+- **Never** empty the trash without explicit user confirmation and a count of what will be permanently removed
+- **Never** run `drizzle-kit push` without backing up the database first
+- **Never** modify environment variables without explaining what each change does
+
+### Recovery Quick Reference
+- **"I deleted an album by accident"** → Go to /admin/trash, find the album, click Restore
+- **"The site looks broken"** → Vercel dashboard → Deployments → click "..." on the previous deployment → Redeploy
+- **"I need to undo my last change"** → `git revert HEAD` then `git push`
+
 ## Environment Variables
 Required in Vercel dashboard and `.env.local` for local dev:
 - `TURSO_DATABASE_URL` — Turso database HTTP URL

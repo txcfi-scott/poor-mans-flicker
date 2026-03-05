@@ -4,10 +4,12 @@
 Poor Man's Flickr — A photo portfolio/gallery site for a photographer friend. Browse albums, upload/manage photos, hero shot cycling, fullscreen slideshow playback, playlist mode. All management via the site itself. Future auth integration.
 
 ## Current Phase
-Planning
+Phase 5 — Public Gallery
+
+Phases 1-4 are complete and pushed to GitHub (https://github.com/txcfi-scott/poor-mans-flicker).
 
 ## Agent Team
-Pepper only (planning phase — will scale team at implementation)
+Pepper + soul agents as needed
 
 ## Key Files
 - working-notes.md — session state and handoff notes

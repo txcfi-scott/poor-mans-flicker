@@ -2,9 +2,9 @@ import { NextRequest } from 'next/server';
 import { db } from '@/lib/db';
 import { photos, albums } from '@/lib/db/schema';
 import { eq, inArray } from 'drizzle-orm';
-import { getStorageProvider } from '@/lib/storage';
 import { apiSuccess, apiError } from '@/lib/api/response';
 import { MAX_BULK_DELETE } from '@/lib/constants';
+import { softDeletePhotos } from '@/lib/db/queries/photos';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     return apiError(`Maximum ${MAX_BULK_DELETE} photos per request`, 'TOO_MANY_PHOTOS', 400);
   }
 
-  // Fetch all photos to get storage keys
+  // Fetch all photos to verify they exist
   const photosToDelete = await db.select().from(photos).where(inArray(photos.id, photoIds));
 
   if (photosToDelete.length === 0) {
@@ -34,27 +34,27 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Delete from storage
-  const storage = getStorageProvider();
-  const allKeys: string[] = [];
-  for (const photo of photosToDelete) {
-    try {
-      const keys = await storage.list(`${photo.storageKey}/`);
-      allKeys.push(...keys);
-    } catch (error) {
-      console.error(`Failed to list storage for ${photo.id}:`, error);
-    }
-  }
-  if (allKeys.length > 0) {
-    try {
-      await storage.deleteMany(allKeys);
-    } catch (error) {
-      console.error('Failed to delete storage objects:', error);
-    }
-  }
+  // R2 cleanup now handled by trash system
+  // const storage = getStorageProvider();
+  // const allKeys: string[] = [];
+  // for (const photo of photosToDelete) {
+  //   try {
+  //     const keys = await storage.list(`${photo.storageKey}/`);
+  //     allKeys.push(...keys);
+  //   } catch (error) {
+  //     console.error(`Failed to list storage for ${photo.id}:`, error);
+  //   }
+  // }
+  // if (allKeys.length > 0) {
+  //   try {
+  //     await storage.deleteMany(allKeys);
+  //   } catch (error) {
+  //     console.error('Failed to delete storage objects:', error);
+  //   }
+  // }
 
-  // Delete database records
-  await db.delete(photos).where(inArray(photos.id, photoIds));
+  // Soft-delete the photos
+  await softDeletePhotos(photoIds as string[]);
 
   return apiSuccess({ deleted: photosToDelete.length });
 }

@@ -1,6 +1,6 @@
 import { db } from '@/lib/db';
 import { albums, photos } from '@/lib/db/schema';
-import { eq, asc, count, inArray } from 'drizzle-orm';
+import { eq, asc, count, inArray, isNull, isNotNull, and } from 'drizzle-orm';
 import { getStorageProvider } from '@/lib/storage';
 
 export async function getAlbums(includePrivate = false) {
@@ -21,7 +21,11 @@ export async function getAlbums(includePrivate = false) {
       updatedAt: albums.updatedAt,
     })
     .from(albums)
-    .where(includePrivate ? undefined : eq(albums.isPublic, true))
+    .where(
+      includePrivate
+        ? isNull(albums.deletedAt)
+        : and(eq(albums.isPublic, true), isNull(albums.deletedAt))
+    )
     .orderBy(asc(albums.sortOrder));
 
   // Get photo counts per album
@@ -31,6 +35,7 @@ export async function getAlbums(includePrivate = false) {
       count: count(),
     })
     .from(photos)
+    .where(isNull(photos.deletedAt))
     .groupBy(photos.albumId);
 
   const countMap = new Map(counts.map(c => [c.albumId, c.count]));
@@ -58,28 +63,28 @@ export async function getAlbums(includePrivate = false) {
 }
 
 export async function getAlbum(id: string) {
-  const results = await db.select().from(albums).where(eq(albums.id, id));
+  const results = await db.select().from(albums).where(and(eq(albums.id, id), isNull(albums.deletedAt)));
   const album = results[0] ?? null;
   if (!album) return null;
 
   const albumPhotos = await db
     .select()
     .from(photos)
-    .where(eq(photos.albumId, id))
+    .where(and(eq(photos.albumId, id), isNull(photos.deletedAt)))
     .orderBy(asc(photos.sortOrder));
 
   return { album, photos: albumPhotos };
 }
 
 export async function getAlbumBySlug(slug: string) {
-  const results = await db.select().from(albums).where(eq(albums.slug, slug));
+  const results = await db.select().from(albums).where(and(eq(albums.slug, slug), isNull(albums.deletedAt)));
   const album = results[0] ?? null;
   if (!album) return null;
 
   const albumPhotos = await db
     .select()
     .from(photos)
-    .where(eq(photos.albumId, album.id))
+    .where(and(eq(photos.albumId, album.id), isNull(photos.deletedAt)))
     .orderBy(asc(photos.sortOrder));
 
   return { album, photos: albumPhotos };
@@ -89,7 +94,7 @@ export async function getHeroAlbums() {
   const heroAlbums = await db
     .select()
     .from(albums)
-    .where(eq(albums.isHero, true))
+    .where(and(eq(albums.isHero, true), isNull(albums.deletedAt)))
     .orderBy(asc(albums.sortOrder));
 
   const heroPhotos = [];
@@ -97,10 +102,35 @@ export async function getHeroAlbums() {
     const albumPhotos = await db
       .select()
       .from(photos)
-      .where(eq(photos.albumId, album.id))
+      .where(and(eq(photos.albumId, album.id), isNull(photos.deletedAt)))
       .orderBy(asc(photos.sortOrder));
     heroPhotos.push(...albumPhotos.map(p => ({ ...p, albumTitle: album.title, albumSlug: album.slug })));
   }
 
   return heroPhotos;
+}
+
+export async function getDeletedAlbums() {
+  return db
+    .select()
+    .from(albums)
+    .where(isNotNull(albums.deletedAt))
+    .orderBy(asc(albums.sortOrder));
+}
+
+export async function softDeleteAlbum(id: string) {
+  const now = Date.now();
+  await db.update(albums).set({ deletedAt: now }).where(eq(albums.id, id));
+  await db
+    .update(photos)
+    .set({ deletedAt: now, deletedBy: 'cascade' })
+    .where(and(eq(photos.albumId, id), isNull(photos.deletedAt)));
+}
+
+export async function restoreAlbum(id: string) {
+  await db.update(albums).set({ deletedAt: null }).where(eq(albums.id, id));
+  await db
+    .update(photos)
+    .set({ deletedAt: null, deletedBy: null })
+    .where(and(eq(photos.albumId, id), eq(photos.deletedBy, 'cascade')));
 }

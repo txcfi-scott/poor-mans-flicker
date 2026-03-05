@@ -3,8 +3,8 @@ import { db } from '@/lib/db';
 import { albums, photos } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { generateSlug } from '@/lib/utils/slug';
-import { getStorageProvider } from '@/lib/storage';
 import { apiSuccess, apiError } from '@/lib/api/response';
+import { softDeleteAlbum } from '@/lib/db/queries/albums';
 
 export async function GET(
   _request: NextRequest,
@@ -67,22 +67,20 @@ export async function DELETE(
     return apiError('Album not found', 'ALBUM_NOT_FOUND', 404);
   }
 
-  // Get all photos to clean up storage
-  const albumPhotos = await db.select().from(photos).where(eq(photos.albumId, id));
+  // R2 cleanup now handled by trash system
+  // const albumPhotos = await db.select().from(photos).where(eq(photos.albumId, id));
+  // const storage = getStorageProvider();
+  // for (const photo of albumPhotos) {
+  //   try {
+  //     const keys = await storage.list(`${photo.storageKey}/`);
+  //     if (keys.length > 0) await storage.deleteMany(keys);
+  //   } catch (error) {
+  //     console.error(`Failed to delete storage for photo ${photo.id}:`, error);
+  //   }
+  // }
 
-  // Delete storage objects
-  const storage = getStorageProvider();
-  for (const photo of albumPhotos) {
-    try {
-      const keys = await storage.list(`${photo.storageKey}/`);
-      if (keys.length > 0) await storage.deleteMany(keys);
-    } catch (error) {
-      console.error(`Failed to delete storage for photo ${photo.id}:`, error);
-    }
-  }
-
-  // Delete album (photos cascade)
-  await db.delete(albums).where(eq(albums.id, id));
+  // Soft-delete album and cascade to photos
+  await softDeleteAlbum(id);
 
   return new Response(null, { status: 204 });
 }

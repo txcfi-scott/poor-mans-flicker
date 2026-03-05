@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Your Photography Site Ready</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0A0A0B;
+      color: #F0F0F2;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #F0F0F2, #6B8AFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: #9E9EA8;
+      font-weight: 400;
+    }
+
+    .intro {
+      background: #141416;
+      border: 1px solid #2A2A30;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      color: #9E9EA8;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .intro strong {
+      color: #F0F0F2;
+    }
+
+    .step-card {
+      background: #141416;
+      border: 1px solid #2A2A30;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+      transition: border-color 0.2s ease;
+    }
+
+    .step-card:hover {
+      border-color: #3E3E48;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: #6B8AFF1A;
+      color: #6B8AFF;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .step-title-group {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .step-time {
+      font-size: 0.8rem;
+      color: #636370;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .step-body {
+      padding-left: 52px;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 0.95rem;
+      color: #F0F0F2;
+      line-height: 1.5;
+    }
+
+    .checklist li + li {
+      border-top: 1px solid #1E1E22;
+    }
+
+    .checklist input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #3E3E48;
+      border-radius: 5px;
+      background: #1E1E22;
+      cursor: pointer;
+      margin-top: 2px;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .checklist input[type="checkbox"]:checked {
+      background: #6B8AFF;
+      border-color: #6B8AFF;
+    }
+
+    .checklist input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      width: 5px;
+      height: 10px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .checklist input[type="checkbox"]:hover {
+      border-color: #6B8AFF;
+    }
+
+    .checklist label {
+      cursor: pointer;
+    }
+
+    .send-scott {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #6B8AFF1A;
+      border: 1px solid #6B8AFF33;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #8BA3FF;
+    }
+
+    .send-scott .icon {
+      flex-shrink: 0;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .send-scott strong {
+      color: #8BA3FF;
+    }
+
+    .link {
+      color: #6B8AFF;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+
+    .link:hover {
+      border-bottom-color: #6B8AFF;
+    }
+
+    .sub-step-label {
+      display: inline-block;
+      background: #28282E;
+      color: #9E9EA8;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sub-step {
+      background: #1E1E22;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .sub-step:last-child {
+      margin-bottom: 0;
+    }
+
+    .sub-step-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #F0F0F2;
+    }
+
+    .sub-step .checklist li {
+      font-size: 0.9rem;
+    }
+
+    .footer-card {
+      background: #141416;
+      border: 1px solid #2A2A30;
+      border-radius: 12px;
+      padding: 28px;
+      margin-top: 36px;
+    }
+
+    .footer-card h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #F0F0F2;
+    }
+
+    .footer-card p {
+      color: #9E9EA8;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .footer-card p strong {
+      color: #F0F0F2;
+    }
+
+    .whats-next-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .whats-next-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      color: #9E9EA8;
+      font-size: 0.9rem;
+    }
+
+    .whats-next-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      background: #4ADE80;
+      border-radius: 50%;
+    }
+
+    .total-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #4ADE801A;
+      color: #4ADE80;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+
+    .note {
+      color: #636370;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 28px 16px 48px;
+      }
+
+      .header h1 {
+        font-size: 1.6rem;
+      }
+
+      .step-card {
+        padding: 20px;
+      }
+
+      .step-body {
+        padding-left: 0;
+        margin-top: 4px;
+      }
+
+      .step-header {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>Getting Your Photography Site Ready</h1>
+      <p>4 quick signups &mdash; Scott handles the rest</p>
+    </div>
+
+    <div class="intro">
+      Hey Chris! To get your photography site up and running, I just need you to create a few free accounts. <strong>Everything below takes about 15 minutes total.</strong> Once you're done, send me the two things marked below and I'll take it from there.
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title-group">
+          <div class="step-title">Create a GitHub Account</div>
+          <div class="step-time">About 2 minutes</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" id="s1a">
+            <label for="s1a">Go to <a href="https://github.com/signup" target="_blank" class="link">github.com/signup</a></label>
+          </li>
+          <li>
+            <input type="checkbox" id="s1b">
+            <label for="s1b">Enter your email, create a password, and pick a username</label>
+          </li>
+          <li>
+            <input type="checkbox" id="s1c">
+            <label for="s1c">Verify your email when they send the confirmation</label>
+          </li>
+        </ul>
+        <div class="send-scott">
+          <span class="icon">&#9993;</span>
+          <span><strong>Send Scott:</strong> your GitHub username</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title-group">
+          <div class="step-title">Create a Cloudflare Account</div>
+          <div class="step-time">About 3 minutes</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" id="s2a">
+            <label for="s2a">Go to <a href="https://dash.cloudflare.com/sign-up" target="_blank" class="link">dash.cloudflare.com/sign-up</a></label>
+          </li>
+          <li>
+            <input type="checkbox" id="s2b">
+            <label for="s2b">Enter your email and create a password</label>
+          </li>
+          <li>
+            <input type="checkbox" id="s2c">
+            <label for="s2c">Verify your email if asked</label>
+          </li>
+          <li>
+            <input type="checkbox" id="s2d">
+            <label for="s2d">Once logged in, look at the right sidebar of the dashboard &mdash; copy the <strong>"Account ID"</strong> (a long string of letters and numbers)</label>
+          </li>
+        </ul>
+        <div class="send-scott">
+          <span class="icon">&#9993;</span>
+          <span><strong>Send Scott:</strong> your Cloudflare Account ID</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-title-group">
+          <div class="step-title">Register Your Domain</div>
+          <div class="step-time">About 5 minutes</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" id="s3a">
+            <label for="s3a">Still in Cloudflare, click <strong>"Domain Registration"</strong> in the left sidebar</label>
+          </li>
+          <li>
+            <input type="checkbox" id="s3b">
+            <label for="s3b">Click <strong>"Register Domains"</strong></label>
+          </li>
+          <li>
+            <input type="checkbox" id="s3c">
+            <label for="s3c">Search for: <strong>chrishardingphotography.com</strong></label>
+          </li>
+          <li>
+            <input type="checkbox" id="s3d">
+            <label for="s3d">Click <strong>"Purchase"</strong> &mdash; it's about $10.46/year</label>
+          </li>
+          <li>
+            <input type="checkbox" id="s3e">
+            <label for="s3e">Enter your payment info and complete checkout</label>
+          </li>
+        </ul>
+        <p class="note">That's it for this step &mdash; Scott will handle all the DNS setup.</p>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">4</div>
+        <div class="step-title-group">
+          <div class="step-title">Activate Two More Services</div>
+          <div class="step-time">About 1 minute each</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="note" style="margin-bottom: 16px; margin-top: 0;">These just need a single "Sign in with GitHub" click &mdash; super quick.</p>
+
+        <div class="sub-step">
+          <span class="sub-step-label">a</span>
+          <div class="sub-step-title">Vercel (website host)</div>
+          <ul class="checklist">
+            <li>
+              <input type="checkbox" id="s4a1">
+              <label for="s4a1">Go to <a href="https://vercel.com/signup" target="_blank" class="link">vercel.com/signup</a></label>
+            </li>
+            <li>
+              <input type="checkbox" id="s4a2">
+              <label for="s4a2">Click <strong>"Continue with GitHub"</strong></label>
+            </li>
+            <li>
+              <input type="checkbox" id="s4a3">
+              <label for="s4a3">Click <strong>"Authorize"</strong> when asked &mdash; done!</label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub-step">
+          <span class="sub-step-label">b</span>
+          <div class="sub-step-title">Turso (database)</div>
+          <ul class="checklist">
+            <li>
+              <input type="checkbox" id="s4b1">
+              <label for="s4b1">Go to <a href="https://turso.tech" target="_blank" class="link">turso.tech</a></label>
+            </li>
+            <li>
+              <input type="checkbox" id="s4b2">
+              <label for="s4b2">Click <strong>"Start for Free"</strong></label>
+            </li>
+            <li>
+              <input type="checkbox" id="s4b3">
+              <label for="s4b3">Sign in with GitHub &mdash; done!</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-card">
+      <h2>What happens next?</h2>
+      <p>Once you've done these 4 steps and sent Scott your <strong>GitHub username</strong> and <strong>Cloudflare Account ID</strong>, Scott takes over and:</p>
+      <ul class="whats-next-list">
+        <li>Sets up your photo storage</li>
+        <li>Creates the database</li>
+        <li>Connects everything together</li>
+        <li>Deploys the site</li>
+        <li>Sends you a link to your live site!</li>
+      </ul>
+      <div class="total-time">
+        Total time: about 15 minutes
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

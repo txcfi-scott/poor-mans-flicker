@@ -11,11 +11,13 @@ export const albums = sqliteTable('albums', {
   isPublic: integer('is_public', { mode: 'boolean' }).notNull().default(true),
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull().$defaultFn(() => new Date()),
+  deletedAt: integer('deleted_at'),
 }, (table) => ([
   uniqueIndex('album_slug_idx').on(table.slug),
   index('album_sort_order_idx').on(table.sortOrder),
   index('album_is_hero_idx').on(table.isHero),
   index('album_is_public_idx').on(table.isPublic),
+  index('album_deleted_at_idx').on(table.deletedAt),
 ]));
 
 export const photos = sqliteTable('photos', {
@@ -33,10 +35,13 @@ export const photos = sqliteTable('photos', {
   storageKey: text('storage_key').notNull(),
   blurhash: text('blurhash').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull().$defaultFn(() => new Date()),
+  deletedAt: integer('deleted_at'),
+  deletedBy: text('deleted_by'),
 }, (table) => ([
   index('photo_album_id_idx').on(table.albumId),
   index('photo_sort_order_idx').on(table.albumId, table.sortOrder),
   uniqueIndex('photo_storage_key_idx').on(table.storageKey),
+  index('photo_deleted_at_idx').on(table.deletedAt),
 ]));
 
 export const siteConfig = sqliteTable('site_config', {
@@ -50,4 +55,5 @@ export const siteConfig = sqliteTable('site_config', {
   themeColorAccent: text('theme_color_accent').notNull().default('#3b82f6'),
   themeFontHeading: text('theme_font_heading').notNull().default('Inter'),
   themeFontBody: text('theme_font_body').notNull().default('Inter'),
+  trashRetentionDays: integer('trash_retention_days').notNull().default(30),
 });

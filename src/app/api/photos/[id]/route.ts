@@ -2,8 +2,8 @@ import { NextRequest } from 'next/server';
 import { db } from '@/lib/db';
 import { photos, albums } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { getStorageProvider } from '@/lib/storage';
 import { apiSuccess, apiError } from '@/lib/api/response';
+import { softDeletePhoto } from '@/lib/db/queries/photos';
 
 export async function DELETE(
   _request: NextRequest,
@@ -23,20 +23,19 @@ export async function DELETE(
     await db.update(albums).set({ coverPhotoId: null, updatedAt: new Date() }).where(eq(albums.id, album.id));
   }
 
-  // Delete from storage (all variants)
-  const storage = getStorageProvider();
-  try {
-    const keys = await storage.list(`${photo.storageKey}/`);
-    if (keys.length > 0) {
-      await storage.deleteMany(keys);
-    }
-  } catch (error) {
-    // Log but don't block — eventual consistency OK
-    console.error('Failed to delete storage objects:', error);
-  }
+  // R2 cleanup now handled by trash system
+  // const storage = getStorageProvider();
+  // try {
+  //   const keys = await storage.list(`${photo.storageKey}/`);
+  //   if (keys.length > 0) {
+  //     await storage.deleteMany(keys);
+  //   }
+  // } catch (error) {
+  //   console.error('Failed to delete storage objects:', error);
+  // }
 
-  // Delete database record
-  await db.delete(photos).where(eq(photos.id, id));
+  // Soft-delete the photo
+  await softDeletePhoto(id);
 
   return new Response(null, { status: 204 });
 }
