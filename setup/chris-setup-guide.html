@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poor Man's Flickr — Setup Guide</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a2e;
+    --text-light: #555;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --purple: #7c3aed;
+    --purple-light: #f3e8ff;
+    --section-bg: #f8fafc;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* Header */
+  .hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .hero .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 400;
+  }
+  .hero .badge {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.3rem 0.9rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--section-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 0.75rem;
+  }
+  .toc ol {
+    padding-left: 1.25rem;
+  }
+  .toc li {
+    margin-bottom: 0.4rem;
+  }
+  .toc a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Section headings */
+  h2.section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 3rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent);
+    letter-spacing: -0.02em;
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem;
+    color: var(--text);
+  }
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1.2rem 0 0.4rem;
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 0.75rem 0 1rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace;
+  }
+  pre .comment { color: #64748b; }
+  pre .string { color: #86efac; }
+  pre .cmd { color: #93c5fd; }
+  pre .flag { color: #c4b5fd; }
+  pre .url { color: #fbbf24; }
+  pre .var { color: #f9a8d4; }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    font-size: 0.88em;
+    background: #f1f5f9;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: #be185d;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-left: 4px solid;
+  }
+  .callout-info {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+  .callout-success {
+    background: var(--green-light);
+    border-color: var(--green);
+  }
+  .callout-warning {
+    background: var(--orange-light);
+    border-color: var(--orange);
+  }
+  .callout-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  .callout p { margin-bottom: 0.25rem; font-size: 0.95rem; }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0;
+  }
+  .checklist li {
+    padding: 0.5rem 0 0.5rem 2rem;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e1;
+    border-radius: 4px;
+    background: white;
+  }
+
+  /* Ordered steps */
+  ol.steps {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0 1rem;
+  }
+  ol.steps li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    background: var(--code-bg);
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--section-bg); }
+  tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+  tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+
+  /* Collapsible details */
+  details {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  details[open] {
+    box-shadow: var(--shadow);
+  }
+  summary {
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    user-select: none;
+    background: var(--section-bg);
+  }
+  summary:hover { background: #f1f5f9; }
+  summary::marker { content: ''; }
+  summary::-webkit-details-marker { display: none; }
+  summary .chevron {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  details[open] summary .chevron { transform: rotate(90deg); }
+  summary .service-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .icon-vercel { background: #000; color: #fff; }
+  .icon-turso { background: #4ff8d2; color: #1a1a2e; }
+  .icon-cloudflare { background: #f38020; color: #fff; }
+  details .detail-body {
+    padding: 0.5rem 1.25rem 1.5rem;
+  }
+
+  /* Quick-start box */
+  .quick-start {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 1rem 0 1.5rem;
+  }
+  .quick-start h3 {
+    color: #93c5fd;
+    margin-top: 0;
+  }
+  .quick-start p { color: #cbd5e1; }
+  .quick-start pre {
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 0.75rem;
+  }
+
+  /* Print styles */
+  @media print {
+    body { font-size: 11pt; }
+    .container { max-width: 100%; padding: 0; }
+    .hero { padding: 1rem 0; }
+    details { border: 1px solid #999; }
+    details[open] { box-shadow: none; }
+    summary { background: #f0f0f0; }
+    pre { font-size: 9pt; }
+    .quick-start { background: #333; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .no-print { display: none; }
+    a { color: var(--accent); }
+    a[href^="http"]::after { content: ' (' attr(href) ')'; font-size: 0.8em; color: #666; }
+    h2.section-title { break-before: page; }
+    h2.section-title:first-of-type { break-before: avoid; }
+    details, summary { break-inside: avoid; }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container { padding: 1rem; }
+    .hero h1 { font-size: 1.6rem; }
+    .hero { padding: 2rem 0.5rem 1.5rem; }
+    .toc { padding: 1rem 1.25rem; }
+    pre { font-size: 0.8rem; padding: 0.75rem; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    summary { font-size: 1rem; padding: 0.75rem 1rem; }
+    details .detail-body { padding: 0.5rem 1rem 1.25rem; }
+    .quick-start { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="hero">
+  <h1>Poor Man's Flickr</h1>
+  <p class="subtitle">Complete Setup Guide for Chris</p>
+  <span class="badge">~30 minutes total</span>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<nav class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#overview">Overview — What This Is &amp; What You Need</a></li>
+    <li><a href="#quickstart">Quick Start — The One-Liner</a></li>
+    <li><a href="#services">Service Setup — Vercel, Turso, Cloudflare</a></li>
+    <li><a href="#envvars">Environment Variables Quick Reference</a></li>
+    <li><a href="#claudecode">Using Claude Code</a></li>
+    <li><a href="#capabilities">What Claude Code Can Do</a></li>
+  </ol>
+</nav>
+
+<!-- SECTION 1: OVERVIEW -->
+<h2 class="section-title" id="overview">1. Overview</h2>
+
+<p>This guide walks you through setting up everything you need to develop and manage your photography portfolio site. The site is built with <strong>Next.js</strong> and hosted on <strong>Vercel</strong>, with photos stored on <strong>Cloudflare R2</strong> and album data in a <strong>Turso</strong> database.</p>
+
+<p>You'll use <strong>Claude Code</strong> to make changes to the site in plain English — no coding knowledge required.</p>
+
+<h3>What You Need</h3>
+<ul class="checklist">
+  <li>A Mac (you have this)</li>
+  <li>Your Claude Code subscription ($20/mo — you have this)</li>
+  <li>A GitHub account (free)</li>
+  <li>About 30 minutes for initial setup</li>
+</ul>
+
+<h3>What You'll Set Up</h3>
+<ul class="checklist">
+  <li><strong>Vercel</strong> — hosts your website, auto-deploys when you push code</li>
+  <li><strong>Turso</strong> — stores album and photo metadata (free tier)</li>
+  <li><strong>Cloudflare</strong> — domain name, image storage (R2), and CDN</li>
+  <li><strong>Claude Code</strong> — your AI assistant for making changes</li>
+</ul>
+
+<!-- SECTION 2: QUICK START -->
+<h2 class="section-title" id="quickstart">2. Quick Start</h2>
+
+<p>There's an install script that handles all the boring stuff — installing Homebrew, Node.js, Git, Claude Code, and all the service CLIs. Open <strong>Terminal</strong> on your Mac and paste this:</p>
+
+<div class="quick-start">
+  <h3>The One-Liner</h3>
+  <p>This installs everything and clones the project. It's safe to run more than once.</p>
+  <pre><code><span class="cmd">bash</span> ~/poor-mans-flicker/setup/install.sh</code></pre>
+</div>
+
+<div class="callout callout-info">
+  <p class="callout-title">Don't have the repo yet?</p>
+  <p>If this is a fresh Mac and you haven't cloned the project, run these two commands first:</p>
+</div>
+<pre><code><span class="comment"># Install Homebrew + Git first</span>
+<span class="cmd">/bin/bash</span> -c <span class="string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span>
+<span class="cmd">brew</span> install git
+
+<span class="comment"># Clone the project</span>
+<span class="cmd">cd</span> ~
+<span class="cmd">git</span> clone <span class="url">https://github.com/txcfi-scott/poor-mans-flicker.git</span>
+
+<span class="comment"># Now run the setup script</span>
+<span class="cmd">bash</span> ~/poor-mans-flicker/setup/install.sh</code></pre>
+
+<h3>What the Script Does</h3>
+<ul class="checklist">
+  <li>Installs <strong>Homebrew</strong> (Mac package manager) — if not already installed</li>
+  <li>Installs <strong>Node.js</strong> and <strong>Git</strong></li>
+  <li>Installs <strong>Claude Code</strong> globally</li>
+  <li>Installs service CLIs: <strong>Turso</strong>, <strong>Vercel</strong>, <strong>Wrangler</strong> (Cloudflare)</li>
+  <li>Clones the project repository</li>
+  <li>Runs <code>npm install</code> for project dependencies</li>
+  <li>Creates a <code>.env.local</code> template file</li>
+</ul>
+
+<h3>After the Script Finishes</h3>
+<p>You'll need to log into each service's CLI:</p>
+<pre><code><span class="cmd">turso</span> auth login      <span class="comment"># Opens browser → log in with GitHub</span>
+<span class="cmd">vercel</span> login          <span class="comment"># Opens browser → log in with GitHub</span>
+<span class="cmd">wrangler</span> login        <span class="comment"># Opens browser → log in with Cloudflare</span></code></pre>
+
+<!-- SECTION 3: SERVICE SETUP -->
+<h2 class="section-title" id="services">3. Service Setup</h2>
+
+<p>Each service needs a free account and a bit of configuration. Click each section below to expand the instructions.</p>
+
+<!-- Vercel -->
+<details open>
+  <summary>
+    <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
+    <span class="service-icon icon-vercel">V</span>
+    Vercel — Hosts Your Website
+  </summary>
+  <div class="detail-body">
+    <p>Vercel runs your website and automatically re-deploys whenever you push code to GitHub.</p>
+
+    <h4>Sign Up</h4>
+    <ol class="steps">
+      <li>Go to <a href="https://vercel.com/signup" target="_blank">vercel.com/signup</a></li>
+      <li>Click <strong>"Continue with GitHub"</strong> (use the same GitHub account that has your repo)</li>
+      <li>That's it — your account is linked to GitHub automatically</li>
+    </ol>
+
+    <h4>Connect Your Repository</h4>
+    <ol class="steps">
+      <li>Go to <a href="https://vercel.com/new" target="_blank">vercel.com/new</a></li>
+      <li>Find <strong>"poor-mans-flicker"</strong> in the list and click <strong>"Import"</strong></li>
+      <li>Leave all settings as default</li>
+      <li>Click <strong>"Deploy"</strong></li>
+      <li>Your site is now live at a <code>.vercel.app</code> URL</li>
+    </ol>
+
+    <h4>Add Environment Variables</h4>
+    <ol class="steps">
+      <li>Go to your project on Vercel &rarr; <strong>Settings</strong> &rarr; <strong>Environment Variables</strong></li>
+      <li>Add each variable from the <a href="#envvars">Quick Reference table</a> below</li>
+    </ol>
+
+    <h4>Custom Domain (Optional)</h4>
+    <ol class="steps">
+      <li>Go to your project &rarr; <strong>Settings</strong> &rarr; <strong>Domains</strong></li>
+      <li>Add your domain (e.g., <code>chrishardingphotography.com</code>)</li>
+      <li>It will tell you what DNS records to add in Cloudflare</li>
+    </ol>
+
+    <h4>CLI Access (for Claude Code)</h4>
+    <p>After running <code>vercel login</code>, Claude Code can:</p>
+    <pre><code><span class="cmd">vercel</span> <span class="flag">--prod</span>        <span class="comment"># Deploy to production</span>
+<span class="cmd">vercel</span> ls              <span class="comment"># Check deployment status</span>
+<span class="cmd">vercel</span> logs            <span class="comment"># View error logs</span>
+<span class="cmd">vercel</span> env add <span class="var">NAME</span>   <span class="comment"># Add an environment variable</span></code></pre>
+  </div>
+</details>
+
+<!-- Turso -->
+<details>
+  <summary>
+    <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
+    <span class="service-icon icon-turso">T</span>
+    Turso — Your Database
+  </summary>
+  <div class="detail-body">
+    <p>Turso stores your album and photo information (not the actual images — those go on Cloudflare R2).</p>
+
+    <h4>Sign Up</h4>
+    <ol class="steps">
+      <li>Go to <a href="https://turso.tech" target="_blank">turso.tech</a></li>
+      <li>Click <strong>"Start for Free"</strong></li>
+      <li>Sign up with GitHub</li>
+    </ol>
+
+    <h4>Create Your Database</h4>
+    <p>After running <code>turso auth login</code> from the Quick Start step:</p>
+    <pre><code><span class="comment"># Create the database</span>
+<span class="cmd">turso</span> db create poor-mans-flicker
+
+<span class="comment"># Get the connection URL (save this!)</span>
+<span class="cmd">turso</span> db show poor-mans-flicker <span class="flag">--url</span>
+
+<span class="comment"># Create an auth token (save this too!)</span>
+<span class="cmd">turso</span> db tokens create poor-mans-flicker</code></pre>
+
+    <div class="callout callout-warning">
+      <p class="callout-title">Save these values!</p>
+      <p>The URL becomes <code>TURSO_DATABASE_URL</code> and the token becomes <code>TURSO_AUTH_TOKEN</code> in your environment variables.</p>
+    </div>
+
+    <h4>Free Tier Limits</h4>
+    <p>You get way more than you'll ever need for a photo portfolio:</p>
+    <ul>
+      <li>9 GB total storage</li>
+      <li>1 billion row reads/month</li>
+      <li>25 million row writes/month</li>
+    </ul>
+
+    <h4>CLI Access (for Claude Code)</h4>
+    <pre><code><span class="cmd">turso</span> db create/destroy          <span class="comment"># Create or delete databases</span>
+<span class="cmd">npx</span> drizzle-kit push              <span class="comment"># Update database schema</span>
+<span class="cmd">turso</span> db shell poor-mans-flicker <span class="string">"SELECT * FROM albums"</span>
+<span class="cmd">turso</span> db tokens create             <span class="comment"># Manage tokens</span>
+<span class="cmd">turso</span> db inspect poor-mans-flicker <span class="comment"># View usage stats</span></code></pre>
+  </div>
+</details>
+
+<!-- Cloudflare -->
+<details>
+  <summary>
+    <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
+    <span class="service-icon icon-cloudflare">C</span>
+    Cloudflare — Domain + Image Storage
+  </summary>
+  <div class="detail-body">
+    <p>Cloudflare handles three things: your <strong>domain name</strong>, <strong>photo file storage</strong> (R2), and fast worldwide delivery via CDN.</p>
+
+    <h4>Sign Up</h4>
+    <ol class="steps">
+      <li>Go to <a href="https://dash.cloudflare.com/sign-up" target="_blank">dash.cloudflare.com/sign-up</a></li>
+      <li>Create account with email + password</li>
+    </ol>
+
+    <h4>Register Your Domain</h4>
+    <ol class="steps">
+      <li>In Cloudflare dashboard &rarr; <strong>Domain Registration</strong> &rarr; <strong>Register Domains</strong></li>
+      <li>Search for your domain (e.g., <code>chrishardingphotography.com</code>)</li>
+      <li>Purchase it (~$10.46/year)</li>
+    </ol>
+
+    <h4>Create an R2 Bucket (Image Storage)</h4>
+    <ol class="steps">
+      <li>In Cloudflare dashboard &rarr; <strong>R2 Object Storage</strong></li>
+      <li>Click <strong>"Create bucket"</strong></li>
+      <li>Name it <code>pmf-photos</code></li>
+      <li>Click <strong>"Create bucket"</strong></li>
+    </ol>
+
+    <h4>Set Up Public Access for the Bucket</h4>
+    <ol class="steps">
+      <li>Go to your bucket &rarr; <strong>Settings</strong></li>
+      <li>Under "Public Access" &rarr; click <strong>"Allow Access"</strong></li>
+      <li>Add a custom domain: <code>photos.chrishardingphotography.com</code></li>
+      <li>Cloudflare will automatically set up DNS for this</li>
+    </ol>
+
+    <h4>Create R2 API Token</h4>
+    <ol class="steps">
+      <li>Go to your bucket &rarr; <strong>Settings</strong> &rarr; <strong>"Manage R2 API Tokens"</strong><br>
+        <em>Or:</em> My Profile &rarr; API Tokens &rarr; R2</li>
+      <li>Click <strong>"Create API Token"</strong></li>
+      <li>Permissions: <strong>"Object Read &amp; Write"</strong></li>
+      <li>Scope: Select your <code>pmf-photos</code> bucket</li>
+      <li>Click <strong>"Create API Token"</strong></li>
+    </ol>
+
+    <div class="callout callout-warning">
+      <p class="callout-title">Save these immediately — you won't see them again!</p>
+      <p><strong>Access Key ID</strong> &rarr; this is your <code>R2_ACCESS_KEY</code></p>
+      <p><strong>Secret Access Key</strong> &rarr; this is your <code>R2_SECRET_KEY</code></p>
+    </div>
+
+    <h4>Get Your R2 Endpoint</h4>
+    <p>Your R2 endpoint URL follows this pattern:</p>
+    <pre><code><span class="url">https://&lt;ACCOUNT_ID&gt;.r2.cloudflarestorage.com</span></code></pre>
+    <p>Find your Account ID: Cloudflare dashboard &rarr; right sidebar &rarr; <strong>"Account ID"</strong></p>
+
+    <h4>DNS for Vercel</h4>
+    <p>When you add your domain in Vercel, it gives you DNS records to add:</p>
+    <ol class="steps">
+      <li>Go to your domain &rarr; <strong>DNS</strong> &rarr; <strong>Records</strong></li>
+      <li>Add the records Vercel tells you (usually a CNAME record)</li>
+      <li>Set the proxy status to <strong>"DNS only"</strong> (gray cloud icon) for Vercel records</li>
+    </ol>
+
+    <h4>Create a General API Token (for DNS management)</h4>
+    <ol class="steps">
+      <li>My Profile &rarr; API Tokens &rarr; <strong>Create Token</strong></li>
+      <li>Use template <strong>"Edit zone DNS"</strong></li>
+      <li>Zone Resources: select your domain</li>
+      <li>Create Token and save it</li>
+    </ol>
+
+    <h4>CLI Access (for Claude Code)</h4>
+    <pre><code><span class="cmd">wrangler</span> r2 object put/get/delete   <span class="comment"># Manage files in R2</span>
+<span class="cmd">wrangler</span> r2 bucket list              <span class="comment"># List buckets</span></code></pre>
+  </div>
+</details>
+
+<!-- SECTION 4: ENV VARS -->
+<h2 class="section-title" id="envvars">4. Environment Variables Quick Reference</h2>
+
+<p>After setting up all three services, you'll have these values. Add them to <strong>both</strong> Vercel (for production) and your local <code>.env.local</code> file (for development).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Where It Comes From</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>TURSO_DATABASE_URL</code></td>
+      <td>Turso: <code>turso db show poor-mans-flicker --url</code></td>
+    </tr>
+    <tr>
+      <td><code>TURSO_AUTH_TOKEN</code></td>
+      <td>Turso: <code>turso db tokens create poor-mans-flicker</code></td>
+    </tr>
+    <tr>
+      <td><code>R2_ENDPOINT</code></td>
+      <td>Cloudflare: <code>https://&lt;account-id&gt;.r2.cloudflarestorage.com</code></td>
+    </tr>
+    <tr>
+      <td><code>R2_ACCESS_KEY</code></td>
+      <td>Cloudflare: R2 API token &rarr; Access Key ID</td>
+    </tr>
+    <tr>
+      <td><code>R2_SECRET_KEY</code></td>
+      <td>Cloudflare: R2 API token &rarr; Secret Access Key</td>
+    </tr>
+    <tr>
+      <td><code>R2_BUCKET</code></td>
+      <td><code>pmf-photos</code> (what you named the bucket)</td>
+    </tr>
+    <tr>
+      <td><code>R2_PUBLIC_URL</code></td>
+      <td><code>https://photos.yourdomain.com</code> (R2 custom domain)</td>
+    </tr>
+    <tr>
+      <td><code>ADMIN_TOKEN</code></td>
+      <td>You make this up — any long random string</td>
+    </tr>
+    <tr>
+      <td><code>NEXT_PUBLIC_SITE_URL</code></td>
+      <td>Your domain: <code>https://chrishardingphotography.com</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout callout-success">
+  <p class="callout-title">Checklist: Where to add these</p>
+  <p></p>
+</div>
+<ul class="checklist">
+  <li><strong>Vercel</strong> &rarr; Project Settings &rarr; Environment Variables (for production)</li>
+  <li><strong>Local</strong> <code>.env.local</code> file (for local development)</li>
+</ul>
+
+<!-- SECTION 5: USING CLAUDE CODE -->
+<h2 class="section-title" id="claudecode">5. Using Claude Code</h2>
+
+<p>Claude Code is your AI-powered assistant. You tell it what you want in plain English, and it reads the code, understands the project, and makes the changes for you.</p>
+
+<h3>Starting Claude Code</h3>
+<pre><code><span class="cmd">cd</span> ~/poor-mans-flicker
+<span class="cmd">claude</span></code></pre>
+
+<p>That's it. Claude automatically reads the project's <code>CLAUDE.md</code> file and understands how everything works.</p>
+
+<h3>What to Say</h3>
+<p>Just describe what you want, like you'd tell a person:</p>
+
+<div style="background: var(--section-bg); border-radius: 10px; padding: 1.25rem; margin: 1rem 0;">
+  <p style="margin-bottom: 0.5rem; font-style: italic; color: var(--accent);">"Add a new album called Summer 2026"</p>
+  <p style="margin-bottom: 0.5rem; font-style: italic; color: var(--accent);">"Change the slideshow transition speed to 8 seconds"</p>
+  <p style="margin-bottom: 0.5rem; font-style: italic; color: var(--accent);">"Fix the layout on mobile"</p>
+  <p style="margin-bottom: 0; font-style: italic; color: var(--accent);">"Add a watermark to uploaded photos"</p>
+</div>
+
+<h3>Deploying Changes</h3>
+<p>After Claude makes changes, push them live:</p>
+<pre><code><span class="cmd">git</span> add -A
+<span class="cmd">git</span> commit -m <span class="string">"description of changes"</span>
+<span class="cmd">git</span> push</code></pre>
+<p>Vercel automatically deploys the update within a minute or two.</p>
+
+<h3>Running the Site Locally</h3>
+<pre><code><span class="cmd">npm</span> run dev</code></pre>
+<p>Then open <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> in your browser to preview changes before deploying.</p>
+
+<!-- SECTION 6: CAPABILITIES -->
+<h2 class="section-title" id="capabilities">6. What Claude Code Can Do</h2>
+
+<p>Once the CLIs are authenticated, Claude Code can manage your entire site:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>How</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Deploy the site</td>
+      <td><code>vercel --prod</code> or just <code>git push</code></td>
+    </tr>
+    <tr>
+      <td>Update database schema</td>
+      <td><code>npx drizzle-kit push</code></td>
+    </tr>
+    <tr>
+      <td>Query the database</td>
+      <td><code>turso db shell</code></td>
+    </tr>
+    <tr>
+      <td>Upload files to R2</td>
+      <td>Via the app's API or <code>wrangler r2 object put</code></td>
+    </tr>
+    <tr>
+      <td>Manage DNS</td>
+      <td>Cloudflare API</td>
+    </tr>
+    <tr>
+      <td>Check deployment status</td>
+      <td><code>vercel ls</code></td>
+    </tr>
+    <tr>
+      <td>View error logs</td>
+      <td><code>vercel logs</code></td>
+    </tr>
+    <tr>
+      <td>Add environment variables</td>
+      <td><code>vercel env add</code></td>
+    </tr>
+    <tr>
+      <td>Create database backups</td>
+      <td><code>turso db dump</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout callout-info">
+  <p class="callout-title">Remember</p>
+  <p>You don't need to type any of these commands yourself. Just tell Claude Code what you want and it will run the right commands for you.</p>
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid var(--border); text-align: center; color: var(--text-light); font-size: 0.85rem;">
+  <p>Generated for Chris — March 2026</p>
+  <p style="margin-top: 0.25rem;">Questions? Ask Scott or just ask Claude Code.</p>
+</div>
+
+</div>
+</body>
+</html>
