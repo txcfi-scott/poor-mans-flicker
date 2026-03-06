@@ -26,6 +26,8 @@ interface Photo {
   originalFilename: string;
   width: number;
   height: number;
+  thumbUrl: string;
+  displayUrl: string;
 }
 
 interface PhotoGridProps {
@@ -102,7 +104,7 @@ export function PhotoGrid({
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            photoIds: reordered.map((p) => p.id),
+            order: reordered.map((p, index) => ({ id: p.id, sortOrder: index })),
           }),
         });
 

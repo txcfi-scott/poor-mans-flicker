@@ -4,26 +4,29 @@ import { albums, photos } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { generateSlug } from '@/lib/utils/slug';
 import { apiSuccess, apiError } from '@/lib/api/response';
-import { softDeleteAlbum } from '@/lib/db/queries/albums';
+import { requireAuth } from '@/lib/api/auth';
+import { softDeleteAlbum, getAlbum } from '@/lib/db/queries/albums';
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const album = await db.select().from(albums).where(eq(albums.id, id));
-  if (album.length === 0) {
+  const result = await getAlbum(id);
+  if (!result) {
     return apiError('Album not found', 'ALBUM_NOT_FOUND', 404);
   }
 
-  const albumPhotos = await db.select().from(photos).where(eq(photos.albumId, id));
-  return apiSuccess({ album: album[0], photos: albumPhotos });
+  return apiSuccess({ album: result.album, photos: result.photos });
 }
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAuth();
+  if (authError) return authError;
+
   const { id } = await params;
   const body = await request.json();
 
@@ -60,6 +63,9 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAuth();
+  if (authError) return authError;
+
   const { id } = await params;
 
   const existing = await db.select().from(albums).where(eq(albums.id, id));

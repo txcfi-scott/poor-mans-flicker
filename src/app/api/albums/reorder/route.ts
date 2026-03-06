@@ -3,8 +3,12 @@ import { db } from '@/lib/db';
 import { albums } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { apiSuccess, apiError } from '@/lib/api/response';
+import { requireAuth } from '@/lib/api/auth';
 
 export async function PUT(request: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
+
   const body = await request.json();
   const { order } = body;
 

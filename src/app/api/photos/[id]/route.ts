@@ -3,12 +3,16 @@ import { db } from '@/lib/db';
 import { photos, albums } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { apiSuccess, apiError } from '@/lib/api/response';
+import { requireAuth } from '@/lib/api/auth';
 import { softDeletePhoto } from '@/lib/db/queries/photos';
 
 export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAuth();
+  if (authError) return authError;
+
   const { id } = await params;
 
   // Find the photo
@@ -45,6 +49,9 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAuth();
+  if (authError) return authError;
+
   const { id } = await params;
   const body = await request.json();
 

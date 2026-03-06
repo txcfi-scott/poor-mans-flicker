@@ -1,12 +1,13 @@
 import { NextRequest } from 'next/server';
 import { db } from '@/lib/db';
 import { photos, albums } from '@/lib/db/schema';
-import { eq, max } from 'drizzle-orm';
+import { eq, max, and, isNull } from 'drizzle-orm';
 import { processImage } from '@/lib/images/process';
 import { extractExif } from '@/lib/images/exif';
 import { getStorageProvider } from '@/lib/storage';
 import { generateId } from '@/lib/utils/id';
 import { apiSuccess, apiError } from '@/lib/api/response';
+import { requireAuth } from '@/lib/api/auth';
 import { ACCEPTED_MIME_TYPES, MAX_UPLOAD_SIZE, MAX_FILES_PER_UPLOAD } from '@/lib/constants';
 
 export const runtime = 'nodejs';
@@ -16,6 +17,9 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAuth();
+  if (authError) return authError;
+
   const { id: albumId } = await params;
 
   // Verify album exists
@@ -46,11 +50,11 @@ export async function POST(
     }
   }
 
-  // Get current max sort order for this album
+  // Get current max sort order for this album (excluding soft-deleted)
   const maxSort = await db
     .select({ value: max(photos.sortOrder) })
     .from(photos)
-    .where(eq(photos.albumId, albumId))
+    .where(and(eq(photos.albumId, albumId), isNull(photos.deletedAt)))
     .get();
   let sortOrder = (maxSort?.value ?? -1) + 1;
 

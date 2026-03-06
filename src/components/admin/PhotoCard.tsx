@@ -12,6 +12,7 @@ interface PhotoCardProps {
     originalFilename: string;
     width: number;
     height: number;
+    thumbUrl: string;
   };
   selected: boolean;
   onSelect: (id: string, selected: boolean) => void;
@@ -44,7 +45,7 @@ export function PhotoCard({
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const thumbUrl = `/uploads/${photo.storageKey}/thumb.webp`;
+  const thumbUrl = photo.thumbUrl;
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSelect(photo.id, e.target.checked);

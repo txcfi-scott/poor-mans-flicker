@@ -3,10 +3,14 @@ import { db } from '@/lib/db';
 import { photos, albums } from '@/lib/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 import { apiSuccess, apiError } from '@/lib/api/response';
+import { requireAuth } from '@/lib/api/auth';
 import { MAX_BULK_DELETE } from '@/lib/constants';
 import { softDeletePhotos } from '@/lib/db/queries/photos';
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
+
   const body = await request.json();
   const { photoIds } = body;
 

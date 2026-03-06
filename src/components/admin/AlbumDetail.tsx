@@ -26,6 +26,8 @@ interface Photo {
   height: number;
   sortOrder: number;
   exifJson: string | null;
+  thumbUrl: string;
+  displayUrl: string;
 }
 
 interface AlbumDetailProps {
@@ -39,18 +41,23 @@ export function AlbumDetail({ album, photos: initialPhotos }: AlbumDetailProps) 
   const [editingPhoto, setEditingPhoto] = useState<Photo | null>(null);
 
   const handleUploadComplete = useCallback((newPhotos: Record<string, unknown>[]) => {
-    const mapped = newPhotos.map((p) => ({
-      id: p.id as string,
-      albumId: p.albumId as string,
-      storageKey: p.storageKey as string,
-      blurhash: p.blurhash as string,
-      caption: (p.caption as string | null) ?? null,
-      originalFilename: p.originalFilename as string,
-      width: p.width as number,
-      height: p.height as number,
-      sortOrder: p.sortOrder as number,
-      exifJson: (p.exifJson as string | null) ?? null,
-    }));
+    const mapped = newPhotos.map((p) => {
+      const urls = p.urls as { thumb: string; display: string } | undefined;
+      return {
+        id: p.id as string,
+        albumId: p.albumId as string,
+        storageKey: p.storageKey as string,
+        blurhash: p.blurhash as string,
+        caption: (p.caption as string | null) ?? null,
+        originalFilename: p.originalFilename as string,
+        width: p.width as number,
+        height: p.height as number,
+        sortOrder: p.sortOrder as number,
+        exifJson: (p.exifJson as string | null) ?? null,
+        thumbUrl: urls?.thumb ?? '',
+        displayUrl: urls?.display ?? '',
+      };
+    });
     setPhotos((prev) => [...prev, ...mapped]);
   }, []);
 

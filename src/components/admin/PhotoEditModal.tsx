@@ -10,6 +10,7 @@ interface PhotoData {
   width: number;
   height: number;
   exifJson: string | null;
+  displayUrl: string;
 }
 
 interface ExifData {
@@ -87,7 +88,7 @@ export default function PhotoEditModal({ photo, onClose, onSave }: PhotoEditModa
 
   const exif = parseExif(photo.exifJson);
   const exifFields = getExifFields(exif);
-  const displayUrl = `${photo.storageKey}/display.webp`;
+  const displayUrl = photo.displayUrl;
 
   // Focus trap
   useEffect(() => {
