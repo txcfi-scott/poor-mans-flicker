@@ -71,6 +71,12 @@ export function Header({ siteTitle, transparent: transparentProp }: HeaderProps)
             >
               Albums
             </Link>
+            <Link
+              href="/playlists"
+              className="text-sm font-medium text-muted hover:text-foreground transition-colors"
+            >
+              Playlists
+            </Link>
           </nav>
 
           {/* Mobile hamburger — 44px touch target */}
@@ -128,6 +134,14 @@ export function Header({ siteTitle, transparent: transparentProp }: HeaderProps)
             tabIndex={menuOpen ? 0 : -1}
           >
             Albums
+          </Link>
+          <Link
+            href="/playlists"
+            className="py-3 px-6 text-2xl font-semibold text-foreground hover:text-accent transition-colors"
+            onClick={() => setMenuOpen(false)}
+            tabIndex={menuOpen ? 0 : -1}
+          >
+            Playlists
           </Link>
         </nav>
       </div>

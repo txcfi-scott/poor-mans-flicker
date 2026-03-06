@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getAlbumBySlug } from '@/lib/db/queries/albums';
+import { getPlaylistBySlug, getPlaylistPhotosForPlayback } from '@/lib/db/queries/playlists';
 import { getSiteConfig } from '@/lib/db/queries/config';
 import { getPhotoUrls } from '@/lib/utils/url';
 import { SlideshowPlayer } from '@/components/gallery/slideshow';
@@ -9,19 +9,19 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default async function SlideshowPage({
+export default async function PlaylistSlideshowPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const result = await getAlbumBySlug(slug);
+  const playlistMeta = await getPlaylistBySlug(slug);
 
-  if (!result || !result.album.isPublic) {
+  if (!playlistMeta || !playlistMeta.isPublic) {
     notFound();
   }
 
-  const { album, photos } = result;
+  const photos = await getPlaylistPhotosForPlayback(playlistMeta.id);
 
   if (photos.length === 0) {
     notFound();
@@ -47,7 +47,7 @@ export default async function SlideshowPage({
     <SlideshowPlayer
       photos={photoData}
       defaultIntervalMs={defaultIntervalMs}
-      backUrl={`/albums/${album.slug}`}
+      backUrl={`/playlists/${slug}`}
     />
   );
 }

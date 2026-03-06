@@ -20,13 +20,13 @@ export interface SlideshowPhoto {
 interface SlideshowPlayerProps {
   photos: SlideshowPhoto[];
   defaultIntervalMs: number;
-  albumSlug: string;
+  backUrl?: string;
 }
 
 export function SlideshowPlayer({
   photos,
   defaultIntervalMs,
-  albumSlug,
+  backUrl = '/albums',
 }: SlideshowPlayerProps) {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -87,8 +87,8 @@ export function SlideshowPlayer({
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
-    router.push(`/albums/${albumSlug}`);
-  }, [router, albumSlug]);
+    router.push(backUrl);
+  }, [router, backUrl]);
 
   // Keyboard handlers
   useEffect(() => {
