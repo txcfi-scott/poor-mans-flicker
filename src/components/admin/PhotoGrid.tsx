@@ -28,6 +28,7 @@ interface Photo {
   height: number;
   thumbUrl: string;
   displayUrl: string;
+  isFavorite?: boolean;
 }
 
 interface PhotoGridProps {
@@ -37,6 +38,7 @@ interface PhotoGridProps {
   onSetCover?: (photoId: string) => void;
   onEditPhoto?: (photoId: string) => void;
   onDeletePhoto?: (photoId: string) => void;
+  onToggleFavorite?: (photoId: string) => void;
 }
 
 export function PhotoGrid({
@@ -46,6 +48,7 @@ export function PhotoGrid({
   onSetCover,
   onEditPhoto,
   onDeletePhoto,
+  onToggleFavorite,
 }: PhotoGridProps) {
   const [photos, setPhotos] = useState<Photo[]>(initialPhotos);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -173,6 +176,7 @@ export function PhotoGrid({
                 onSetCover={onSetCover}
                 onEditPhoto={onEditPhoto}
                 onDeletePhoto={onDeletePhoto}
+                onToggleFavorite={onToggleFavorite}
               />
             ))}
           </div>

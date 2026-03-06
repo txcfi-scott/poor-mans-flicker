@@ -62,6 +62,7 @@ export async function PATCH(
 
   const updates: Record<string, unknown> = {};
   if (body.caption !== undefined) updates.caption = body.caption;
+  if (body.isFavorite !== undefined) updates.isFavorite = body.isFavorite;
 
   if (Object.keys(updates).length === 0) {
     return apiError('No fields to update', 'NO_UPDATES', 400);

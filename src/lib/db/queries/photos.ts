@@ -2,7 +2,7 @@
 // pagination when photo counts grow large enough to warrant it.
 
 import { db } from '@/lib/db';
-import { photos } from '@/lib/db/schema';
+import { photos, albums } from '@/lib/db/schema';
 import { eq, asc, and, isNull, isNotNull, inArray, lt } from 'drizzle-orm';
 
 export async function getPhotosByAlbum(albumId: string) {
@@ -60,4 +60,31 @@ export async function getExpiredTrashPhotos(retentionDays: number) {
     .select()
     .from(photos)
     .where(and(isNotNull(photos.deletedAt), lt(photos.deletedAt, cutoff)));
+}
+
+export async function getFavoritePhotos() {
+  return db
+    .select({
+      id: photos.id,
+      albumId: photos.albumId,
+      storageKey: photos.storageKey,
+      blurhash: photos.blurhash,
+      caption: photos.caption,
+      width: photos.width,
+      height: photos.height,
+      sortOrder: photos.sortOrder,
+      albumTitle: albums.title,
+      albumSlug: albums.slug,
+    })
+    .from(photos)
+    .innerJoin(albums, eq(photos.albumId, albums.id))
+    .where(and(eq(photos.isFavorite, true), isNull(photos.deletedAt), isNull(albums.deletedAt)))
+    .orderBy(asc(photos.sortOrder));
+}
+
+export async function toggleFavorite(photoId: string, isFavorite: boolean) {
+  await db
+    .update(photos)
+    .set({ isFavorite })
+    .where(eq(photos.id, photoId));
 }

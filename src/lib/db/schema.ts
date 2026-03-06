@@ -34,6 +34,7 @@ export const photos = sqliteTable('photos', {
   sortOrder: integer('sort_order').notNull().default(0),
   storageKey: text('storage_key').notNull(),
   blurhash: text('blurhash').notNull(),
+  isFavorite: integer('is_favorite', { mode: 'boolean' }).notNull().default(false),
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull().$defaultFn(() => new Date()),
   deletedAt: integer('deleted_at'),
   deletedBy: text('deleted_by'),
@@ -42,6 +43,7 @@ export const photos = sqliteTable('photos', {
   index('photo_sort_order_idx').on(table.albumId, table.sortOrder),
   uniqueIndex('photo_storage_key_idx').on(table.storageKey),
   index('photo_deleted_at_idx').on(table.deletedAt),
+  index('photo_is_favorite_idx').on(table.isFavorite),
 ]));
 
 export const siteConfig = sqliteTable('site_config', {

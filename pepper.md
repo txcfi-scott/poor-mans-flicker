@@ -4,7 +4,7 @@
 Poor Man's Flickr — A photo portfolio/gallery site for a photographer friend. Browse albums, upload/manage photos, hero shot cycling, fullscreen slideshow playback, playlist mode. All management via the site itself. Future auth integration.
 
 ## Current Phase
-Phase 5 — Public Gallery
+Complete — All phases shipped (1-8). Playlists deferred to future.
 
 Phases 1-4 are complete and pushed to GitHub (https://github.com/txcfi-scott/poor-mans-flicker).
 
@@ -29,7 +29,7 @@ None yet
 - Friend is hands-off — Scott or friend via Claude Code for updates
 - "Poor man's" implies lean, fast, minimal infrastructure — not overbuilt
 - **Stack:** Next.js 15 App Router + TypeScript, Tailwind CSS
-- **Hosting:** Vercel (free tier) — zero ops, git push deploy
+- **Hosting:** Vercel (free tier, on Chris/Sgtpilot's account) — zero ops, git push deploy
 - **Database:** Turso (free tier) — SQLite over HTTP via Drizzle ORM
 - **Image storage:** Cloudflare R2
 - **Image processing:** Sharp (server-side) + client pre-resize before upload

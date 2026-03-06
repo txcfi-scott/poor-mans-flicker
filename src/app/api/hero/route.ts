@@ -1,9 +1,14 @@
 import { getHeroAlbums } from '@/lib/db/queries/albums';
+import { getFavoritePhotos } from '@/lib/db/queries/photos';
 import { getPhotoUrls } from '@/lib/utils/url';
 import { apiSuccess } from '@/lib/api/response';
 
 export async function GET() {
-  const heroPhotos = await getHeroAlbums();
+  // Use favorite photos as primary source; fall back to hero albums if none
+  let heroPhotos = await getFavoritePhotos();
+  if (heroPhotos.length === 0) {
+    heroPhotos = await getHeroAlbums();
+  }
 
   const photosWithUrls = heroPhotos.map((photo) => ({
     id: photo.id,

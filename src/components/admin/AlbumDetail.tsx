@@ -28,6 +28,7 @@ interface Photo {
   exifJson: string | null;
   thumbUrl: string;
   displayUrl: string;
+  isFavorite?: boolean;
 }
 
 interface AlbumDetailProps {
@@ -98,6 +99,39 @@ export function AlbumDetail({ album, photos: initialPhotos }: AlbumDetailProps) 
       console.error('Failed to delete photo:', err);
     }
   }, []);
+
+  const handleToggleFavorite = useCallback(async (photoId: string) => {
+    const photo = photos.find((p) => p.id === photoId);
+    if (!photo) return;
+
+    const newFavorite = !photo.isFavorite;
+
+    // Optimistic update
+    setPhotos((prev) =>
+      prev.map((p) => (p.id === photoId ? { ...p, isFavorite: newFavorite } : p))
+    );
+
+    try {
+      const res = await fetch(`/api/photos/${photoId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isFavorite: newFavorite }),
+      });
+      if (!res.ok) {
+        // Revert on failure
+        setPhotos((prev) =>
+          prev.map((p) => (p.id === photoId ? { ...p, isFavorite: !newFavorite } : p))
+        );
+        console.error('Failed to toggle favorite');
+      }
+    } catch (err) {
+      // Revert on error
+      setPhotos((prev) =>
+        prev.map((p) => (p.id === photoId ? { ...p, isFavorite: !newFavorite } : p))
+      );
+      console.error('Failed to toggle favorite:', err);
+    }
+  }, [photos]);
 
   const handleBulkDelete = useCallback(async (ids: string[]) => {
     try {
@@ -170,6 +204,7 @@ export function AlbumDetail({ album, photos: initialPhotos }: AlbumDetailProps) 
         onSetCover={handleSetCover}
         onEditPhoto={handleEditPhoto}
         onDeletePhoto={handleDeletePhoto}
+        onToggleFavorite={handleToggleFavorite}
       />
 
       {/* Bulk Actions */}

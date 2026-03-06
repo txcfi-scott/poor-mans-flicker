@@ -168,3 +168,95 @@ Major QA and fix cycle. Pepper ran full project autonomously.
 - Machine setup playbook — ~/.claude/projects/.../memory/machine-setup-playbook.md
 
 --- Checkpoint saved ---
+
+## Checkpoint — 2026-03-06
+
+### Session Summary
+Full build session: Phase 6 + Polish + UI Design Pass. Pepper orchestrated 7 waves with parallel agents.
+
+### Completed This Session
+- **Phase 6: Slideshow Engine** — 5 files: useSlideshow hook, SlideshowPlayer (crossfade, dual-layer), KenBurnsLayer (randomized zoom+pan), SlideshowControls (auto-hide, speed selector), slideshow page (server component with URL resolution)
+- **P2 Bug Fixes** — slug collision on album update, date serialization in AlbumCard, globals.css img rule scoping, dead code removal (client-exif), error boundaries for public + admin route groups
+- **Loading Skeletons** — 7 loading.tsx files for all route segments, Skeleton component, improved AlbumList empty state
+- **Responsive Polish** — header mobile fade transition, admin sidebar slide-out, lightbox touch swipe, 44px touch targets, photo grid overflow fix
+- **UI Design Pass (Jony's spec)** — 24 files modified:
+  - Design token system: 20 semantic tokens in globals.css replacing ~80 hardcoded hex values
+  - Typography: font-light headings, tracking-tight, typographic scale
+  - Header: scroll-aware transparency on home page, auto-detects via usePathname
+  - Footer: simplified to single copyright line
+  - Hero: Ken Burns animation, cinematic gradient, centered text, float scroll indicator
+  - Album cards: borderless, 3/2 aspect, subtle scale+brightness hover
+  - Photo grid: 4px gap, 260/300/360px row heights
+  - Photo cards: no border, persistent gradient, caption fade-in
+  - Lightbox: always-visible nav, simplified close, larger caption
+  - Login: pure Tailwind (no inline styles)
+  - 404: subtle text-8xl font-extralight
+  - Admin: tinted stat cards, font-light values, checkbox rings, modal polish
+  - Page transitions: fadeIn animation on route change
+
+### Deployment
+- Git push: 6 commits pushed to origin/main
+- Vercel auto-deploy: WORKING (git integration reconnected)
+- Smoke test: 8/8 endpoints passing
+- Live at: https://chrishardingphotography.com
+
+### What's Left
+- **Phase 8 misc:** Vercel GitHub App confirmed working
+- **Playlists:** Cut from v1 (Elon's recommendation) — ship later if Chris wants it
+- **Remaining P2 from Gwynne:** pagination (deferred, not needed for <500 photos)
+- **middleware deprecation:** Next.js 16 warns about middleware → proxy convention, not blocking
+
+### Git Commits This Session
+1. 02ebd7b — P2 bug fixes: slug collision, date serialization, CSS scoping
+2. 5da850f — Phase 6: Slideshow engine — crossfade, Ken Burns, controls
+3. c29bf71 — Add loading skeletons and improve admin empty states
+4. e1373df — Responsive polish: transitions, touch targets, swipe navigation
+5. e4d27a7 — W5a: Design tokens, typography, layout — Jony's design pass
+6. 3673700 — W5b: Gallery + admin design polish — Jony's design pass
+
+--- Checkpoint saved ---
+
+## Checkpoint — 2026-03-06 (Session 2)
+
+**Branch:** main
+**Uncommitted changes:** M pepper.md, M working-notes.md, ?? .env.vercel, ?? build-monitor/elon-playlist-plan.md, ?? build-monitor/elon-session-plan.md, ?? build-monitor/jony-design-review.md, ?? build-monitor/status/elon-plan.json, ?? build-monitor/status/elon-playlist.json, ?? build-monitor/status/jony-design.json, ?? build-monitor/status/w6-deploy.json
+
+**Session work:**
+- Phase 6: Slideshow Engine (5 files) — crossfade, Ken Burns, controls, keyboard/touch
+- P2 Bug Fixes (6 items) — slug collision, date serialization, CSS scoping, dead code, error boundaries
+- Loading Skeletons (7 loading.tsx files) + empty state improvements
+- Responsive Polish (5 files) — touch swipe, mobile transitions, 44px touch targets
+- UI Design Pass (24 files) — Jony's full spec: design tokens, typography, transparent header, simplified footer, editorial photo grid, admin polish
+- Playlists feature (full stack):
+  - Backend: playlists + playlist_photos tables, 11 query functions, 7 API endpoints
+  - Admin UI: list page, new page, editor with photo picker (dnd-kit), sidebar nav
+  - Public: listing page, detail page with photo grid, slideshow playback, header nav link
+  - SlideshowPlayer refactored: albumSlug → backUrl prop
+- Vercel redeployment (env vars re-added after stale project link)
+- Visual QA via headless browser — confirmed design changes on vercel.app
+
+**Deploy status:**
+- All changes deployed to poor-mans-flicker.vercel.app ✅
+- Custom domain (chrishardingphotography.com) — see correction note below
+
+**Blockers:**
+- None confirmed — see correction note at bottom of file
+
+**Git commits this session:**
+1. 97e5a6f — Playlists: admin UI — list, editor, photo picker [TESTED]
+2. ba58713 — Playlists: public pages + slideshow playback [TESTED]
+3. af21ee6 — Playlists: schema, queries, API routes [TESTED]
+4. 3673700 — W5b: Gallery + admin design polish — Jony's design pass [TESTED]
+5. e4d27a7 — W5a: Design tokens, typography, layout — Jony's design pass [TESTED]
+
+**Notes:**
+- Playlists were originally cut from v1 by Elon, then Scott asked for them — now shipped
+- Elon's plan: build-monitor/elon-session-plan.md and elon-playlist-plan.md
+- Jony's design review: build-monitor/jony-design-review.md
+- Vercel project was re-linked during this session; env vars were re-added via CLI
+
+--- Checkpoint saved before context clear ---
+
+## Correction — 2026-03-06
+
+**Vercel account ownership:** The Vercel project is on Chris's (Sgtpilot's) account, not Scott's. Scott develops locally and pushes to GitHub; Vercel auto-deploys from Chris's account. The custom domain (chrishardingphotography.com) should already be configured on Chris's Vercel project since it's his account. The "domain blocker" from the previous session (needing to remove the domain from an "old" account) may not be a real blocker — it was based on a misunderstanding of whose account the project lives on.

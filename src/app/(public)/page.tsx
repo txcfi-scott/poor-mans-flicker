@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getHeroAlbums, getAlbums } from '@/lib/db/queries/albums';
+import { getFavoritePhotos } from '@/lib/db/queries/photos';
 import { getSiteConfig } from '@/lib/db/queries/config';
 import { getPhotoUrl } from '@/lib/utils/url';
 import { HeroCarousel } from '@/components/gallery/hero-carousel';
@@ -7,11 +8,15 @@ import type { HeroPhoto } from '@/components/gallery/hero-carousel';
 import { AlbumCard } from '@/components/gallery/album-card';
 
 export default async function HomePage() {
-  const [heroPhotos, config, albumsData] = await Promise.all([
+  const [favoritePhotos, heroAlbumPhotos, config, albumsData] = await Promise.all([
+    getFavoritePhotos(),
     getHeroAlbums(),
     getSiteConfig(),
     getAlbums(),
   ]);
+
+  // Use favorites as primary source; fall back to hero albums if none
+  const heroPhotos = favoritePhotos.length > 0 ? favoritePhotos : heroAlbumPhotos;
 
   const heroInterval = config?.heroIntervalMs ?? 5000;
   const siteTitle = config?.siteTitle ?? 'My Photography';
