@@ -9,8 +9,8 @@ export default async function AlbumsPage() {
   const albums = await getAlbums(false);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-3xl font-bold tracking-tight text-[#F0F0F2]">
+    <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 page-enter">
+      <h1 className="mb-8 text-3xl md:text-4xl font-light tracking-tight text-foreground">
         Albums
       </h1>
 
@@ -26,13 +26,13 @@ export default async function AlbumsPage() {
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="mb-4 text-[#636370]"
+            className="mb-4 text-muted-foreground"
           >
             <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
             <circle cx="9" cy="9" r="2" />
             <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
           </svg>
-          <p className="text-lg text-[#9E9EA8]">No albums yet.</p>
+          <p className="text-lg text-muted">No albums yet.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

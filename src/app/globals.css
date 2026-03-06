@@ -1,17 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0a0a;
-  --color-foreground: #fafafa;
-  --color-muted: #a1a1aa;
-  --color-muted-foreground: #71717a;
-  --color-border: #27272a;
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
-  --color-surface: #141414;
-  --color-surface-hover: #1a1a1a;
-  --color-danger: #ef4444;
-  --color-success: #22c55e;
+  --color-background: #0A0A0B;
+  --color-foreground: #F0F0F2;
+  --color-muted: #9E9EA8;
+  --color-muted-foreground: #636370;
+  --color-border: #2A2A30;
+  --color-border-hover: #3E3E48;
+  --color-accent: #6B8AFF;
+  --color-accent-hover: #8BA3FF;
+  --color-accent-muted: #6B8AFF1A;
+  --color-surface: #141416;
+  --color-surface-hover: #1E1E22;
+  --color-surface-elevated: #28282E;
+  --color-danger: #F87171;
+  --color-danger-muted: #F871711A;
+  --color-success: #4ADE80;
+  --color-success-muted: #4ADE801A;
+  --color-warning: #FACC15;
+  --color-warning-muted: #FACC151A;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
 }
@@ -65,4 +72,38 @@ img:not([data-gallery]) {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.page-enter {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.2s ease-out;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: white;
 }

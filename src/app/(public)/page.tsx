@@ -40,15 +40,14 @@ export default async function HomePage() {
         <div className="absolute inset-0 flex items-end pointer-events-none">
           <div className="w-full px-6 pb-24 md:px-8 lg:px-8 pointer-events-auto text-center lg:text-left">
             <h1
-              className="text-3xl lg:text-5xl font-bold text-white"
+              className="text-3xl lg:text-5xl font-light tracking-tight text-white"
               style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}
             >
               {siteTitle}
             </h1>
             <p
-              className="mt-2 text-lg lg:text-xl font-normal"
+              className="mt-2 text-lg lg:text-xl font-normal text-muted"
               style={{
-                color: '#9E9EA8',
                 textShadow: '0 2px 8px rgba(0,0,0,0.6)',
               }}
             >
@@ -57,8 +56,7 @@ export default async function HomePage() {
             <div className="mt-8">
               <Link
                 href="/albums"
-                className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-white hover:brightness-110 transition-all active:scale-[0.98]"
-                style={{ backgroundColor: '#6B8AFF' }}
+                className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold border border-white/30 text-white hover:bg-white/10 transition-colors active:scale-[0.98]"
               >
                 Browse Albums
               </Link>
@@ -69,12 +67,9 @@ export default async function HomePage() {
 
       {/* Featured Albums Section */}
       {featuredAlbums.length > 0 && (
-        <section className="px-4 md:px-6 py-16 mx-auto max-w-7xl">
-          <h2
-            className="text-2xl font-semibold mb-8"
-            style={{ color: '#F0F0F2' }}
-          >
-            Albums
+        <section className="px-4 md:px-6 py-16 mx-auto max-w-7xl page-enter">
+          <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-8">
+            Recent Work
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
@@ -95,8 +90,7 @@ export default async function HomePage() {
             <div className="mt-8 text-center">
               <Link
                 href="/albums"
-                className="text-sm font-medium transition-colors hover:underline"
-                style={{ color: '#6B8AFF' }}
+                className="text-sm font-medium text-accent hover:text-accent-hover transition-colors hover:underline"
               >
                 View All Albums
               </Link>

@@ -33,21 +33,22 @@ export default async function AlbumDetailPage({
   });
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6">
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6 page-enter">
       {/* Back link */}
       <Link
         href="/albums"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-[#9E9EA8] transition-colors hover:text-[#F0F0F2]"
+        className="mb-6 inline-flex items-center gap-1 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <svg
-          width="16"
-          height="16"
+          width="20"
+          height="20"
           viewBox="0 0 16 16"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="w-5 h-5"
         >
           <path d="M10 12L6 8l4-4" />
         </svg>
@@ -56,23 +57,23 @@ export default async function AlbumDetailPage({
 
       {/* Album header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#F0F0F2]">{album.title}</h1>
+        <h1 className="text-3xl md:text-4xl font-light tracking-tight text-foreground">{album.title}</h1>
 
         {album.description && (
-          <p className="mt-2 line-clamp-2 text-base text-[#9E9EA8]">
+          <p className="mt-2 line-clamp-2 text-base text-muted">
             {album.description}
           </p>
         )}
 
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-[#636370]">
+          <p className="text-sm text-muted-foreground">
             {photos.length} {photos.length === 1 ? 'photo' : 'photos'}
           </p>
 
           {photos.length > 0 && (
             <Link
               href={`/albums/${slug}/slideshow`}
-              className="inline-flex h-10 items-center justify-center rounded-lg bg-[#6B8AFF] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#8BA3FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
+              className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-6 text-sm font-semibold text-white transition-colors hover:bg-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Start Slideshow
             </Link>
@@ -84,8 +85,8 @@ export default async function AlbumDetailPage({
       {photos.length > 0 ? (
         <AlbumGallery photos={photoData} />
       ) : (
-        <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-[#2A2A30] bg-[#141416]">
-          <p className="text-[#636370]">No photos in this album yet.</p>
+        <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-border bg-surface">
+          <p className="text-muted-foreground">No photos in this album yet.</p>
         </div>
       )}
     </main>

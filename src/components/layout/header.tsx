@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 interface HeaderProps {
@@ -8,8 +9,26 @@ interface HeaderProps {
   transparent?: boolean;
 }
 
-export function Header({ siteTitle, transparent = false }: HeaderProps) {
+export function Header({ siteTitle, transparent: transparentProp }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Auto-detect home page for transparent header
+  const transparent = transparentProp ?? pathname === '/';
+
+  // Track scroll position for transparent header
+  useEffect(() => {
+    if (!transparent) return;
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+
+    handleScroll(); // Check initial position
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [transparent]);
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -23,18 +42,23 @@ export function Header({ siteTitle, transparent = false }: HeaderProps) {
     };
   }, [menuOpen]);
 
-  const bgClass = transparent
-    ? 'bg-transparent absolute top-0 left-0 right-0 z-50'
-    : 'bg-[#141416] border-b border-[#2A2A30] sticky top-0 z-50';
+  let bgClass: string;
+  if (transparent) {
+    bgClass = scrolled
+      ? 'fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md border-b border-border'
+      : 'fixed top-0 left-0 right-0 z-50 bg-transparent';
+  } else {
+    bgClass = 'bg-surface border-b border-border sticky top-0 z-50';
+  }
 
   return (
     <>
-      <header className={`h-16 ${bgClass}`}>
+      <header className={`h-16 transition-all duration-300 ${bgClass}`}>
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Site title */}
           <Link
             href="/"
-            className="text-lg font-bold text-[#F0F0F2] hover:text-[#6B8AFF] transition-colors truncate"
+            className="text-lg font-light tracking-tight text-foreground hover:text-accent transition-colors truncate"
           >
             {siteTitle}
           </Link>
@@ -43,7 +67,7 @@ export function Header({ siteTitle, transparent = false }: HeaderProps) {
           <nav className="hidden items-center gap-8 lg:flex">
             <Link
               href="/albums"
-              className="text-sm font-medium text-[#9E9EA8] hover:text-[#F0F0F2] transition-colors"
+              className="text-sm font-medium text-muted hover:text-foreground transition-colors"
             >
               Albums
             </Link>
@@ -52,7 +76,7 @@ export function Header({ siteTitle, transparent = false }: HeaderProps) {
           {/* Mobile hamburger — 44px touch target */}
           <button
             type="button"
-            className="flex h-11 w-11 items-center justify-center rounded-lg text-[#9E9EA8] hover:bg-[#1E1E22] hover:text-[#F0F0F2] transition-colors lg:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-muted hover:bg-surface-hover hover:text-foreground transition-colors lg:hidden"
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
           >
@@ -67,7 +91,7 @@ export function Header({ siteTitle, transparent = false }: HeaderProps) {
 
       {/* Mobile overlay menu — always rendered, animated with CSS transitions */}
       <div
-        className={`fixed inset-0 z-[60] flex flex-col items-center justify-center bg-[#0A0A0B] transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background transition-opacity duration-300 lg:hidden ${
           menuOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
@@ -77,7 +101,7 @@ export function Header({ siteTitle, transparent = false }: HeaderProps) {
         {/* Close button — 44px touch target */}
         <button
           type="button"
-          className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg text-[#9E9EA8] hover:bg-[#1E1E22] hover:text-[#F0F0F2] transition-colors"
+          className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg text-muted hover:bg-surface-hover hover:text-foreground transition-colors"
           onClick={() => setMenuOpen(false)}
           aria-label="Close menu"
           tabIndex={menuOpen ? 0 : -1}
@@ -91,7 +115,7 @@ export function Header({ siteTitle, transparent = false }: HeaderProps) {
         <nav className="flex flex-col items-center gap-4">
           <Link
             href="/"
-            className="py-3 px-6 text-2xl font-semibold text-[#F0F0F2] hover:text-[#6B8AFF] transition-colors"
+            className="py-3 px-6 text-2xl font-semibold text-foreground hover:text-accent transition-colors"
             onClick={() => setMenuOpen(false)}
             tabIndex={menuOpen ? 0 : -1}
           >
@@ -99,7 +123,7 @@ export function Header({ siteTitle, transparent = false }: HeaderProps) {
           </Link>
           <Link
             href="/albums"
-            className="py-3 px-6 text-2xl font-semibold text-[#F0F0F2] hover:text-[#6B8AFF] transition-colors"
+            className="py-3 px-6 text-2xl font-semibold text-foreground hover:text-accent transition-colors"
             onClick={() => setMenuOpen(false)}
             tabIndex={menuOpen ? 0 : -1}
           >
