@@ -127,27 +127,44 @@ chrishardingphotography.com — to be registered on Cloudflare (~$10.46/yr)
 - Domain: ~$10.46/yr (Cloudflare)
 - Total: ~$1/mo
 
-## Checkpoint — 2026-03-05 13:25:52
+## Checkpoint — 2026-03-05 Evening
 
-**Branch:** main
-**Uncommitted changes:** M pepper.md, M working-notes.md, ?? setup/chris-accounts-guide.html
-**Session work:**
-- Phases 1-4 fully implemented and pushed to GitHub (txcfi-scott/poor-mans-flicker)
-- Phase 1: Next.js scaffold, Turso+Drizzle, R2 storage, Tailwind dark theme, route structure, env validation
-- Phase 2: Sharp image pipeline, EXIF extraction, upload/delete APIs, client-side resize
-- Phase 3: Album CRUD APIs, reorder API, admin album list with drag-and-drop, create/edit form, query functions
-- Phase 4: Photo upload UI, photo grid with drag-and-drop, edit modal, bulk actions, album detail page
-- Chris developer kit: CLAUDE.md, setup guides (accounts-only + full), install script, services docs
-- Domain research: chrishardingphotography.com selected, register on Cloudflare (~$10.46/yr)
-- GitHub repo created and all phases pushed
+### Session Summary
+Major QA and fix cycle. Pepper ran full project autonomously.
 
-**Next step:** Dispatch Phase 5 — Public Gallery (landing page with hero cycling, albums index, album detail with photo grid, lightbox, header/footer)
-**Blockers:** None
-**Notes:**
-- Chris accounts guide (chris-accounts-guide.html) ready to send — just 3 browser signups, no installs
-- Chris will use Claude Code for all updates — not technical, talks to Claude in plain English
-- Admin pages marked force-dynamic (they hit DB at render time)
-- Total project cost: ~$1/mo (Vercel free + Turso free + R2 free + domain $10.46/yr)
-- Build passes clean, TypeScript strict, all routes compiling
+### Completed This Session
+- **Phase 5 Public Gallery** — 15 files: hero carousel, album grid, album detail, photo grid, lightbox, header/footer, BlurHash placeholders
+- **Soft-delete safety system** — Schema changes, query filters, trash API routes, restore endpoints
+- **Auth system** — Middleware protecting /admin, login page, session cookies, auth on all admin API routes, logout
+- **Admin UI** — Dashboard with stats, sidebar navigation, settings page with config form, trash management page
+- **Error pages** — Custom 404 and error boundary
+- **Missing API routes** — /api/auth/login, /api/auth/logout, /api/config, /api/hero, /api/slideshow
+- **Bug fixes** — Admin photo URLs (was hardcoded local paths), photo reorder payload mismatch, soft-delete filtering in API routes, Suspense boundary on login
+- **Infrastructure** — R2 bucket created, Turso DB + schema, Vercel project + all env vars, DNS records, R2 public access enabled
+- **Chris's machine** — Bootstrap script, Claude Code installed, global Claude config
+- **Docs** — Test plan (97 cases), backup strategy, machine setup playbook
 
---- Checkpoint saved before context clear ---
+### Test Results (Live Site)
+- 16/18 API tests passing (config route 404 being redeployed)
+- Public pages all working with real photos
+- Auth middleware working (admin redirect + API enforcement)
+- Custom domain live: chrishardingphotography.com
+
+### Known Issues
+- /api/config returning 404 (deployment caching, redeploying)
+- Vercel git link disconnected — deploys are manual via `vercel deploy --prod`
+- Need to install Vercel GitHub App on txcfi-scott account for auto-deploy
+- Slideshow page is still a stub (Phase 6 work)
+- P2 items from Gwynne's review: slug collision on update, date serialization, no loading states, no pagination, globals.css img rule may conflict with gallery
+
+### Remaining Phases
+- **Phase 6:** Slideshow Engine (fullscreen player, transitions, controls, playlist mode)
+- **Phase 7:** Polish (responsive, loading states, empty states, remaining P2 fixes)
+- **Phase 8:** Deployment finalization (auto-deploy, domain SSL verification, smoke test)
+
+### Credentials (locations only)
+- .env.local — all secrets for local dev
+- Vercel project env vars — all secrets for production
+- Machine setup playbook — ~/.claude/projects/.../memory/machine-setup-playbook.md
+
+--- Checkpoint saved ---
