@@ -25,7 +25,7 @@ function LoginForm() {
       });
 
       if (!res.ok) {
-        setError('Invalid token');
+        setError('Invalid password');
         setLoading(false);
         return;
       }
@@ -44,20 +44,20 @@ function LoginForm() {
           Admin Login
         </h1>
         <p className="text-sm mb-6 text-center text-muted">
-          Enter the admin token to continue.
+          Enter the admin password to continue.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="token" className="sr-only">
-              Admin Token
+              Password
             </label>
             <input
               id="token"
               type="password"
               value={token}
               onChange={(e) => setToken(e.target.value)}
-              placeholder="Admin token"
+              placeholder="Password"
               required
               autoFocus
               className="w-full rounded-lg bg-surface-hover border border-border px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-accent"
