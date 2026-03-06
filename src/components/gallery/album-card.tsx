@@ -26,9 +26,9 @@ export function AlbumCard({
   return (
     <Link
       href={`/albums/${slug}`}
-      className="group block overflow-hidden rounded-lg border border-[#2A2A30] bg-[#141416] transition-colors hover:border-[#3E3E48]"
+      className="group block overflow-hidden rounded-xl bg-surface shadow-lg shadow-black/20"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#1E1E22]">
+      <div className="relative aspect-[3/2] overflow-hidden bg-surface-hover">
         {coverPhotoUrl && coverPhotoBlurhash ? (
           <BlurHashImage
             src={coverPhotoUrl}
@@ -36,10 +36,10 @@ export function AlbumCard({
             alt={title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-all duration-500 group-hover:scale-[1.03] group-hover:brightness-110"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-[#636370]">
+          <div className="flex h-full items-center justify-center text-muted-foreground">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="48"
@@ -57,19 +57,19 @@ export function AlbumCard({
             </svg>
           </div>
         )}
-        <div className="absolute right-2 top-2 rounded-full bg-[#0A0A0B]/70 px-2.5 py-1 text-xs font-medium text-[#F0F0F2] backdrop-blur-sm">
-          {photoCount} {photoCount === 1 ? 'photo' : 'photos'}
-        </div>
       </div>
-      <div className="p-4">
-        <h3 className="text-base font-semibold text-[#F0F0F2] transition-colors group-hover:text-[#6B8AFF]">
+      <div className="p-5">
+        <h3 className="text-base font-semibold text-foreground group-hover:underline underline-offset-4 decoration-white/30">
           {title}
         </h3>
         {truncatedDescription && (
-          <p className="mt-1 text-sm leading-relaxed text-[#9E9EA8]">
+          <p className="mt-2 text-sm leading-relaxed text-muted">
             {truncatedDescription}
           </p>
         )}
+        <p className="mt-2 text-xs text-muted-foreground">
+          {photoCount} {photoCount === 1 ? 'photo' : 'photos'}
+        </p>
       </div>
     </Link>
   );

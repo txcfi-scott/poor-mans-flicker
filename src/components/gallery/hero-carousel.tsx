@@ -15,9 +15,11 @@ export interface HeroPhoto {
 interface HeroCarouselProps {
   photos: HeroPhoto[];
   intervalMs: number;
+  siteTitle?: string;
+  siteDescription?: string;
 }
 
-export function HeroCarousel({ photos, intervalMs }: HeroCarouselProps) {
+export function HeroCarousel({ photos, intervalMs, siteTitle, siteDescription }: HeroCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState<number | null>(null);
   const [transitioning, setTransitioning] = useState(false);
@@ -67,7 +69,7 @@ export function HeroCarousel({ photos, intervalMs }: HeroCarouselProps) {
   // Empty state
   if (photos.length === 0) {
     return (
-      <div className="relative h-screen w-full" style={{ backgroundColor: '#0A0A0B' }} />
+      <div className="relative h-screen w-full bg-background" />
     );
   }
 
@@ -75,9 +77,13 @@ export function HeroCarousel({ photos, intervalMs }: HeroCarouselProps) {
   const nextPhoto = nextIndex !== null ? photos[nextIndex] : null;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden" style={{ backgroundColor: '#0A0A0B' }}>
-      {/* Current image */}
-      <div className="absolute inset-0">
+    <div className="relative h-screen w-full overflow-hidden bg-background">
+      {/* Current image with Ken Burns */}
+      <div
+        className="absolute inset-0"
+        style={{ animation: `kenBurns ${intervalMs + 1500}ms ease-out forwards` }}
+        key={`hero-${currentIndex}`}
+      >
         <BlurHashImage
           src={currentPhoto.displayUrl}
           blurhash={currentPhoto.blurhash}
@@ -108,18 +114,36 @@ export function HeroCarousel({ photos, intervalMs }: HeroCarouselProps) {
         </div>
       )}
 
-      {/* Gradient overlay for text readability */}
+      {/* Cinematic gradient overlay */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 70%)',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.3) 100%)',
         }}
       />
 
+      {/* Hero text overlay — centered */}
+      {(siteTitle || siteDescription) && (
+        <div className="absolute inset-0 flex items-center justify-center text-center px-4">
+          <div>
+            {siteTitle && (
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-white">
+                {siteTitle}
+              </h1>
+            )}
+            {siteDescription && (
+              <p className="mt-4 text-lg md:text-xl font-normal text-white/70">
+                {siteDescription}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2" style={{ animation: 'float 3s ease-in-out infinite' }}>
         <svg
-          className="h-6 w-6 text-white/60"
+          className="h-5 w-5 text-white/40"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

@@ -183,21 +183,21 @@ export default function PhotoEditModal({ photo, onClose, onSave }: PhotoEditModa
     >
       <div
         ref={modalRef}
-        className="bg-surface rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-surface rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
       >
         {/* Image */}
         <div className="relative w-full">
           <img
             src={displayUrl}
             alt={photo.caption ?? photo.originalFilename}
-            className="w-full rounded-t-xl object-contain max-h-[50vh]"
+            className="w-full rounded-t-2xl object-contain max-h-[60vh]"
           />
         </div>
 
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Filename */}
-          <p className="text-sm text-white/50 truncate">{photo.originalFilename}</p>
+          <p className="text-sm text-muted-foreground truncate">{photo.originalFilename}</p>
 
           {/* EXIF Data */}
           {exifFields.length > 0 && (
@@ -206,7 +206,7 @@ export default function PhotoEditModal({ photo, onClose, onSave }: PhotoEditModa
               <div className="grid grid-cols-2 gap-x-6 gap-y-1">
                 {exifFields.map(({ label, value }) => (
                   <div key={label} className="flex justify-between text-sm py-1">
-                    <span className="text-white/40">{label}</span>
+                    <span className="text-muted-foreground">{label}</span>
                     <span className="text-white/70">{value}</span>
                   </div>
                 ))}

@@ -38,15 +38,12 @@ function LoginForm() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0A0A0B' }}>
-      <div
-        className="w-full max-w-sm rounded-xl p-8 shadow-xl"
-        style={{ backgroundColor: '#141416', border: '1px solid #2A2A30' }}
-      >
-        <h1 className="text-2xl font-semibold mb-2 text-center" style={{ color: '#F0F0F2' }}>
+    <main className="min-h-screen flex items-center justify-center bg-background">
+      <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-8 shadow-xl">
+        <h1 className="text-2xl font-semibold mb-2 text-center text-foreground">
           Admin Login
         </h1>
-        <p className="text-sm mb-6 text-center" style={{ color: '#9E9EA8' }}>
+        <p className="text-sm mb-6 text-center text-muted">
           Enter the admin token to continue.
         </p>
 
@@ -63,19 +60,12 @@ function LoginForm() {
               placeholder="Admin token"
               required
               autoFocus
-              className="w-full rounded-lg px-4 py-3 text-sm outline-none transition-colors"
-              style={{
-                backgroundColor: '#1E1E22',
-                border: '1px solid #2A2A30',
-                color: '#F0F0F2',
-              }}
-              onFocus={(e) => (e.target.style.borderColor = '#6B8AFF')}
-              onBlur={(e) => (e.target.style.borderColor = '#2A2A30')}
+              className="w-full rounded-lg bg-surface-hover border border-border px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-accent"
             />
           </div>
 
           {error && (
-            <p className="text-sm rounded-lg px-3 py-2" style={{ color: '#F87171', backgroundColor: '#F871711A' }}>
+            <p className="text-sm rounded-lg px-3 py-2 text-danger bg-danger-muted">
               {error}
             </p>
           )}
@@ -83,19 +73,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading || !token}
-            className="w-full rounded-lg px-4 py-3 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              backgroundColor: '#6B8AFF',
-              color: '#F0F0F2',
-            }}
-            onMouseOver={(e) => {
-              if (!(e.target as HTMLButtonElement).disabled) {
-                (e.target as HTMLButtonElement).style.backgroundColor = '#8BA3FF';
-              }
-            }}
-            onMouseOut={(e) => {
-              (e.target as HTMLButtonElement).style.backgroundColor = '#6B8AFF';
-            }}
+            className="w-full rounded-lg bg-accent hover:bg-accent-hover text-white px-4 py-3 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>

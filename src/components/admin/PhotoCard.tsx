@@ -83,7 +83,7 @@ export function PhotoCard({
             type="checkbox"
             checked={selected}
             onChange={handleCheckboxChange}
-            className="w-5 h-5 rounded border-2 border-white/80 bg-black/30 text-accent cursor-pointer accent-[var(--color-accent,#3b82f6)]"
+            className="w-5 h-5 rounded border-2 border-white/80 bg-black/30 text-accent cursor-pointer ring-2 ring-white/50 accent-[var(--color-accent,#3b82f6)]"
           />
         </label>
 

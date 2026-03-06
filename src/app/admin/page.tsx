@@ -49,25 +49,25 @@ export default async function AdminDashboard() {
   const storage = getStorageProvider();
 
   const stats = [
-    { label: 'Total Albums', value: albumCount.toString(), color: '#6B8AFF' },
-    { label: 'Total Photos', value: photoCount.toString(), color: '#4ADE80' },
-    { label: 'In Trash', value: trashCount.toString(), color: '#FACC15' },
-    { label: 'Storage (est.)', value: formatBytes(estimatedStorage), color: '#8BA3FF' },
+    { label: 'Total Albums', value: albumCount.toString(), tint: 'bg-accent/5' },
+    { label: 'Total Photos', value: photoCount.toString(), tint: 'bg-success-muted' },
+    { label: 'In Trash', value: trashCount.toString(), tint: 'bg-warning-muted' },
+    { label: 'Storage (est.)', value: formatBytes(estimatedStorage), tint: 'bg-accent/5' },
   ];
 
   return (
     <>
-      <h1 className="text-2xl font-semibold text-[#F0F0F2] mb-6">Dashboard</h1>
+      <h1 className="text-2xl font-semibold text-foreground mb-6">Dashboard</h1>
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="bg-[#141416] border border-[#2A2A30] rounded-xl p-5"
+            className={`${stat.tint} border border-border rounded-xl p-5`}
           >
-            <p className="text-[#9E9EA8] text-sm mb-1">{stat.label}</p>
-            <p className="text-2xl font-semibold" style={{ color: stat.color }}>
+            <p className="text-muted text-sm mb-1">{stat.label}</p>
+            <p className="text-3xl font-light text-foreground">
               {stat.value}
             </p>
           </div>
@@ -78,67 +78,67 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <Link
           href="/admin/albums/new"
-          className="bg-[#141416] border border-[#2A2A30] rounded-xl p-5 hover:border-[#6B8AFF] transition-colors group"
+          className="bg-surface border border-border rounded-xl p-5 hover:border-accent transition-colors group"
         >
           <div className="flex items-center gap-3">
-            <span className="text-[#6B8AFF] text-xl">+</span>
+            <span className="text-accent text-xl">+</span>
             <div>
-              <p className="text-[#F0F0F2] font-medium group-hover:text-[#6B8AFF] transition-colors">
+              <p className="text-foreground font-medium group-hover:text-accent transition-colors">
                 New Album
               </p>
-              <p className="text-[#636370] text-sm">Create a new photo album</p>
+              <p className="text-muted-foreground text-sm">Create a new photo album</p>
             </div>
           </div>
         </Link>
         <Link
           href="/admin/albums"
-          className="bg-[#141416] border border-[#2A2A30] rounded-xl p-5 hover:border-[#6B8AFF] transition-colors group"
+          className="bg-surface border border-border rounded-xl p-5 hover:border-accent transition-colors group"
         >
           <div className="flex items-center gap-3">
-            <svg className="w-5 h-5 text-[#6B8AFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" />
             </svg>
             <div>
-              <p className="text-[#F0F0F2] font-medium group-hover:text-[#6B8AFF] transition-colors">
+              <p className="text-foreground font-medium group-hover:text-accent transition-colors">
                 Manage Albums
               </p>
-              <p className="text-[#636370] text-sm">Edit, reorder, and organize</p>
+              <p className="text-muted-foreground text-sm">Edit, reorder, and organize</p>
             </div>
           </div>
         </Link>
         <Link
           href="/"
           target="_blank"
-          className="bg-[#141416] border border-[#2A2A30] rounded-xl p-5 hover:border-[#6B8AFF] transition-colors group"
+          className="bg-surface border border-border rounded-xl p-5 hover:border-accent transition-colors group"
         >
           <div className="flex items-center gap-3">
-            <svg className="w-5 h-5 text-[#6B8AFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
             </svg>
             <div>
-              <p className="text-[#F0F0F2] font-medium group-hover:text-[#6B8AFF] transition-colors">
+              <p className="text-foreground font-medium group-hover:text-accent transition-colors">
                 View Site
               </p>
-              <p className="text-[#636370] text-sm">Open the public site</p>
+              <p className="text-muted-foreground text-sm">Open the public site</p>
             </div>
           </div>
         </Link>
       </div>
 
       {/* Recent photos */}
-      <div className="bg-[#141416] border border-[#2A2A30] rounded-xl p-5">
-        <h2 className="text-lg font-semibold text-[#F0F0F2] mb-4">Recent Photos</h2>
+      <div className="bg-surface border border-border rounded-xl p-5">
+        <h2 className="text-lg font-semibold text-foreground mb-4">Recent Photos</h2>
         {recentPhotos.length === 0 ? (
-          <p className="text-[#636370] text-sm">No photos uploaded yet.</p>
+          <p className="text-muted-foreground text-sm">No photos uploaded yet.</p>
         ) : (
           <div className="space-y-3">
             {recentPhotos.map((photo) => (
               <div
                 key={photo.id}
-                className="flex items-center gap-4 p-3 rounded-lg bg-[#1E1E22]"
+                className="flex items-center gap-4 p-3 rounded-lg bg-surface-hover"
               >
                 {/* Thumbnail */}
-                <div className="w-12 h-12 rounded-md overflow-hidden bg-[#28282E] shrink-0">
+                <div className="w-12 h-12 rounded-md overflow-hidden bg-surface-elevated shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={storage.getUrl(`${photo.storageKey}/thumb.webp`)}
@@ -147,12 +147,12 @@ export default async function AdminDashboard() {
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[#F0F0F2] text-sm truncate">{photo.originalFilename}</p>
-                  <p className="text-[#636370] text-xs">
+                  <p className="text-foreground text-sm truncate">{photo.originalFilename}</p>
+                  <p className="text-muted-foreground text-xs">
                     {photo.width} x {photo.height} &middot; {formatBytes(photo.sizeBytes)}
                   </p>
                 </div>
-                <p className="text-[#636370] text-xs shrink-0">
+                <p className="text-muted-foreground text-xs shrink-0">
                   {photo.createdAt instanceof Date
                     ? photo.createdAt.toLocaleDateString()
                     : new Date(photo.createdAt).toLocaleDateString()}

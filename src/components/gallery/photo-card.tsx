@@ -29,7 +29,7 @@ export function PhotoCard({
     <button
       type="button"
       onClick={() => onPhotoClick(index)}
-      className="group relative block flex-shrink-0 cursor-pointer overflow-hidden rounded-md border border-[#2A2A30] transition-all duration-200 hover:border-[#3E3E48] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
+      className="group relative block flex-shrink-0 cursor-pointer overflow-hidden rounded-sm transition-shadow duration-200 hover:shadow-[0_4px_12px_rgba(0,0,0,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       style={{ ...style, minWidth: 0 }}
       aria-label={caption || `Photo ${index + 1}`}
     >
@@ -42,10 +42,12 @@ export function PhotoCard({
         className="h-full w-full object-cover"
       />
 
-      {/* Caption overlay on hover */}
+      {/* Caption overlay — persistent gradient, text fades in on hover */}
       {caption && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-[#0A0A0BCC] to-transparent px-3 py-2 transition-transform duration-200 group-hover:translate-y-0">
-          <p className="truncate text-sm text-[#F0F0F2]">{caption}</p>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent">
+          <p className="absolute bottom-0 left-0 right-0 truncate px-3 py-2 text-sm text-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {caption}
+          </p>
         </div>
       )}
     </button>

@@ -29,14 +29,14 @@ interface LayoutRow {
   photos: LayoutPhoto[];
 }
 
-const GAP = 8;
+const GAP = 4;
 
 function getTargetHeight(): number {
-  if (typeof window === 'undefined') return 240;
+  if (typeof window === 'undefined') return 300;
   const w = window.innerWidth;
-  if (w < 768) return 200;
-  if (w < 1024) return 240;
-  return 280;
+  if (w < 768) return 260;
+  if (w < 1024) return 300;
+  return 360;
 }
 
 function computeLayout(

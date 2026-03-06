@@ -121,11 +121,11 @@ export function Lightbox({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Close button — 44px touch target, top-right */}
+      {/* Close button */}
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
+        className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-lg bg-black/40 text-white transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         aria-label="Close lightbox"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -133,33 +133,31 @@ export function Lightbox({
         </svg>
       </button>
 
-      {/* Previous arrow — visible on all screen sizes */}
-      {!isFirst && (
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); onPrev(); }}
-          className="absolute left-2 sm:left-4 top-1/2 z-10 flex h-11 w-11 sm:h-12 sm:w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
-          aria-label="Previous photo"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-      )}
+      {/* Previous arrow — always visible, dimmed at boundary */}
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); if (!isFirst) onPrev(); }}
+        className={`absolute left-2 sm:left-4 top-1/2 z-10 flex h-11 w-11 sm:h-12 sm:w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-black/40 text-white transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${isFirst ? 'opacity-30 cursor-default' : ''}`}
+        aria-label="Previous photo"
+        aria-disabled={isFirst}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
 
-      {/* Next arrow — visible on all screen sizes */}
-      {!isLast && (
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); onNext(); }}
-          className="absolute right-2 sm:right-4 top-1/2 z-10 flex h-11 w-11 sm:h-12 sm:w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
-          aria-label="Next photo"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </button>
-      )}
+      {/* Next arrow — always visible, dimmed at boundary */}
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); if (!isLast) onNext(); }}
+        className={`absolute right-2 sm:right-4 top-1/2 z-10 flex h-11 w-11 sm:h-12 sm:w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-black/40 text-white transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${isLast ? 'opacity-30 cursor-default' : ''}`}
+        aria-label="Next photo"
+        aria-disabled={isLast}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
 
       {/* Main image */}
       <div
@@ -172,7 +170,7 @@ export function Lightbox({
         <img
           src={photo.src}
           alt={photo.alt}
-          className="transition-opacity duration-200"
+          className="will-change-opacity transition-opacity duration-200"
           style={{
             maxWidth: '95vw',
             maxHeight: '85vh',
@@ -186,9 +184,9 @@ export function Lightbox({
         {/* Caption + counter */}
         <div className="mt-3 sm:mt-4 text-center px-4">
           {photo.caption && (
-            <p className="text-sm sm:text-base text-[#9E9EA8]">{photo.caption}</p>
+            <p className="text-lg text-white/80">{photo.caption}</p>
           )}
-          <p className="mt-1 text-xs sm:text-sm text-[#636370]">
+          <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
             {currentIndex + 1} / {photos.length}
           </p>
         </div>
