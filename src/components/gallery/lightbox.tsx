@@ -24,6 +24,11 @@ export function Lightbox({
   const [visible, setVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  // Touch swipe state
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const isSwiping = useRef(false);
+
   // Fade-in animation
   useEffect(() => {
     if (isOpen) {
@@ -64,6 +69,35 @@ export function Lightbox({
     [onClose]
   );
 
+  // Touch swipe handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isSwiping.current = true;
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (!isSwiping.current) return;
+      isSwiping.current = false;
+
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaX = touchEndX - touchStartX.current;
+      const deltaY = touchEndY - touchStartY.current;
+
+      // Only count horizontal swipes (ignore vertical scrolls)
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX < 0) {
+          onNext();
+        } else {
+          onPrev();
+        }
+      }
+    },
+    [onNext, onPrev]
+  );
+
   if (!isOpen || photos.length === 0) return null;
 
   const photo = photos[currentIndex];
@@ -84,12 +118,14 @@ export function Lightbox({
         opacity: visible ? 1 : 0,
       }}
       onClick={handleBackdropClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* Close button */}
+      {/* Close button — 44px touch target, top-right */}
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
+        className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
         aria-label="Close lightbox"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -97,12 +133,12 @@ export function Lightbox({
         </svg>
       </button>
 
-      {/* Previous arrow */}
+      {/* Previous arrow — visible on all screen sizes */}
       {!isFirst && (
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onPrev(); }}
-          className="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
+          className="absolute left-2 sm:left-4 top-1/2 z-10 flex h-11 w-11 sm:h-12 sm:w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
           aria-label="Previous photo"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -111,12 +147,12 @@ export function Lightbox({
         </button>
       )}
 
-      {/* Next arrow */}
+      {/* Next arrow — visible on all screen sizes */}
       {!isLast && (
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onNext(); }}
-          className="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
+          className="absolute right-2 sm:right-4 top-1/2 z-10 flex h-11 w-11 sm:h-12 sm:w-12 -translate-y-1/2 items-center justify-center rounded-lg bg-[#0A0A0B99] text-[#F0F0F2] transition-colors hover:bg-[#1E1E22] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
           aria-label="Next photo"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -127,7 +163,7 @@ export function Lightbox({
 
       {/* Main image */}
       <div
-        className="flex flex-col items-center transition-transform duration-300"
+        className="flex flex-col items-center px-2 sm:px-0 transition-transform duration-300"
         style={{
           transform: visible ? 'scale(1)' : 'scale(0.95)',
         }}
@@ -138,20 +174,21 @@ export function Lightbox({
           alt={photo.alt}
           className="transition-opacity duration-200"
           style={{
-            maxWidth: '90vw',
-            maxHeight: '80vh',
+            maxWidth: '95vw',
+            maxHeight: '85vh',
             objectFit: 'contain',
             opacity: imageLoaded ? 1 : 0,
           }}
           onLoad={() => setImageLoaded(true)}
+          draggable={false}
         />
 
         {/* Caption + counter */}
-        <div className="mt-4 text-center">
+        <div className="mt-3 sm:mt-4 text-center px-4">
           {photo.caption && (
-            <p className="text-base text-[#9E9EA8]">{photo.caption}</p>
+            <p className="text-sm sm:text-base text-[#9E9EA8]">{photo.caption}</p>
           )}
-          <p className="mt-1 text-sm text-[#636370]">
+          <p className="mt-1 text-xs sm:text-sm text-[#636370]">
             {currentIndex + 1} / {photos.length}
           </p>
         </div>

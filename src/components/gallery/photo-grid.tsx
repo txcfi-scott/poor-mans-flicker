@@ -172,7 +172,7 @@ export function PhotoGrid({ photos, onPhotoClick }: PhotoGridProps) {
   const rows = computeLayout(photos, containerWidth);
 
   return (
-    <div ref={containerRef} className="w-full">
+    <div ref={containerRef} className="w-full overflow-hidden">
       {containerWidth > 0 &&
         rows.map((row, rowIndex) => (
           <div

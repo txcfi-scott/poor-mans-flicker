@@ -30,7 +30,7 @@ export function PhotoCard({
       type="button"
       onClick={() => onPhotoClick(index)}
       className="group relative block flex-shrink-0 cursor-pointer overflow-hidden rounded-md border border-[#2A2A30] transition-all duration-200 hover:border-[#3E3E48] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B8AFF]"
-      style={style}
+      style={{ ...style, minWidth: 0 }}
       aria-label={caption || `Photo ${index + 1}`}
     >
       <BlurhashImage
@@ -39,7 +39,7 @@ export function PhotoCard({
         alt={alt}
         width={width}
         height={height}
-        className="h-full w-full"
+        className="h-full w-full object-cover"
       />
 
       {/* Caption overlay on hover */}

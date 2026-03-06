@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const navItems = [
   {
@@ -48,6 +48,23 @@ export default function AdminSidebar({ siteTitle }: { siteTitle: string }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Close sidebar on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
   function isActive(href: string) {
     if (href === '/admin') return pathname === '/admin';
     return pathname.startsWith(href);
@@ -68,7 +85,7 @@ export default function AdminSidebar({ siteTitle }: { siteTitle: string }) {
         <p className="text-[#636370] text-xs mt-1">Admin Panel</p>
       </div>
 
-      {/* Navigation */}
+      {/* Navigation — min 44px touch targets */}
       <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map((item) => {
           const active = isActive(item.href);
@@ -77,7 +94,7 @@ export default function AdminSidebar({ siteTitle }: { siteTitle: string }) {
               key={item.href}
               href={item.href}
               onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 px-3 min-h-[44px] py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 active
                   ? 'bg-[#6B8AFF1A] text-[#6B8AFF]'
                   : 'text-[#9E9EA8] hover:text-[#F0F0F2] hover:bg-[#1E1E22]'
@@ -95,7 +112,7 @@ export default function AdminSidebar({ siteTitle }: { siteTitle: string }) {
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[#9E9EA8] hover:text-[#F0F0F2] hover:bg-[#1E1E22] transition-colors"
+          className="flex items-center gap-3 px-3 min-h-[44px] py-2.5 rounded-lg text-sm font-medium text-[#9E9EA8] hover:text-[#F0F0F2] hover:bg-[#1E1E22] transition-colors"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
@@ -104,7 +121,7 @@ export default function AdminSidebar({ siteTitle }: { siteTitle: string }) {
         </Link>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[#9E9EA8] hover:text-[#F87171] hover:bg-[#F871711A] transition-colors w-full"
+          className="flex items-center gap-3 px-3 min-h-[44px] py-2.5 rounded-lg text-sm font-medium text-[#9E9EA8] hover:text-[#F87171] hover:bg-[#F871711A] transition-colors w-full"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
@@ -117,10 +134,10 @@ export default function AdminSidebar({ siteTitle }: { siteTitle: string }) {
 
   return (
     <>
-      {/* Mobile hamburger */}
+      {/* Mobile hamburger — 44px touch target */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-lg bg-[#141416] border border-[#2A2A30] text-[#F0F0F2]"
+        className="fixed top-4 left-4 z-50 lg:hidden flex h-11 w-11 items-center justify-center rounded-lg bg-[#141416] border border-[#2A2A30] text-[#F0F0F2]"
         aria-label="Toggle sidebar"
       >
         {mobileOpen ? (
@@ -134,17 +151,20 @@ export default function AdminSidebar({ siteTitle }: { siteTitle: string }) {
         )}
       </button>
 
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/60 lg:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+      {/* Mobile backdrop — always rendered, animated */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 lg:hidden ${
+          mobileOpen
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
 
-      {/* Sidebar - mobile */}
+      {/* Sidebar - mobile (slide-out drawer) */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-60 bg-[#141416] border-r border-[#2A2A30] transform transition-transform lg:hidden ${
+        className={`fixed inset-y-0 left-0 z-40 w-60 bg-[#141416] border-r border-[#2A2A30] transform transition-transform duration-300 ease-in-out lg:hidden ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
