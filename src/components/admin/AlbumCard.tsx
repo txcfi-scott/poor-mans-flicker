@@ -106,7 +106,7 @@ export function AlbumCard({ album, onDelete }: AlbumCardProps) {
         <p className="text-sm text-muted">
           {album.photoCount} {album.photoCount === 1 ? 'photo' : 'photos'}
           <span className="mx-2">·</span>
-          {album.createdAt.toLocaleDateString()}
+          {new Date(album.createdAt).toLocaleDateString()}
         </p>
       </div>
 

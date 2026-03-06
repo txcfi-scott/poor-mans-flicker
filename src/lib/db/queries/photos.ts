@@ -1,3 +1,6 @@
+// TODO: Pagination — queries currently return all rows. Add limit/offset or cursor-based
+// pagination when photo counts grow large enough to warrant it.
+
 import { db } from '@/lib/db';
 import { photos } from '@/lib/db/schema';
 import { eq, asc, and, isNull, isNotNull, inArray, lt } from 'drizzle-orm';

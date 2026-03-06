@@ -60,8 +60,8 @@ a, button, input, select, textarea {
   transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
 }
 
-/* Image defaults */
-img {
+/* Image defaults — exclude gallery images to prevent layout shift */
+img:not([data-gallery]) {
   max-width: 100%;
   height: auto;
   display: block;

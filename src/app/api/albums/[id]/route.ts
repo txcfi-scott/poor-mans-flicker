@@ -42,7 +42,23 @@ export async function PATCH(
       return apiError('Title must be 1-200 characters', 'INVALID_TITLE', 400);
     }
     updates.title = body.title.trim();
-    updates.slug = generateSlug(body.title);
+
+    // Generate unique slug, appending -2, -3, etc. on collision
+    let slug = generateSlug(body.title);
+    let suffix = 1;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const conflict = await db
+        .select({ id: albums.id })
+        .from(albums)
+        .where(eq(albums.slug, slug));
+      if (conflict.length === 0 || (conflict.length === 1 && conflict[0].id === id)) {
+        break;
+      }
+      suffix++;
+      slug = `${generateSlug(body.title)}-${suffix}`;
+    }
+    updates.slug = slug;
   }
   if (body.description !== undefined) updates.description = body.description;
   if (body.isPublic !== undefined) updates.isPublic = body.isPublic;
