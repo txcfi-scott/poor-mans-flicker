@@ -57,3 +57,30 @@ export const siteConfig = sqliteTable('site_config', {
   themeFontBody: text('theme_font_body').notNull().default('Inter'),
   trashRetentionDays: integer('trash_retention_days').notNull().default(30),
 });
+
+export const playlists = sqliteTable('playlists', {
+  id: text('id').primaryKey(),
+  title: text('title').notNull(),
+  slug: text('slug').notNull().unique(),
+  description: text('description'),
+  sortOrder: integer('sort_order').default(0),
+  isPublic: integer('is_public', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).$defaultFn(() => new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).$defaultFn(() => new Date()),
+}, (table) => ([
+  uniqueIndex('playlist_slug_idx').on(table.slug),
+  index('playlist_sort_order_idx').on(table.sortOrder),
+  index('playlist_is_public_idx').on(table.isPublic),
+]));
+
+export const playlistPhotos = sqliteTable('playlist_photos', {
+  id: text('id').primaryKey(),
+  playlistId: text('playlist_id').notNull().references(() => playlists.id, { onDelete: 'cascade' }),
+  photoId: text('photo_id').notNull().references(() => photos.id, { onDelete: 'cascade' }),
+  sortOrder: integer('sort_order').default(0),
+  addedAt: integer('added_at', { mode: 'timestamp_ms' }).$defaultFn(() => new Date()),
+}, (table) => ([
+  index('playlist_photo_playlist_id_idx').on(table.playlistId),
+  index('playlist_photo_sort_order_idx').on(table.playlistId, table.sortOrder),
+  index('playlist_photo_photo_id_idx').on(table.photoId),
+]));
