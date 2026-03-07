@@ -75,7 +75,7 @@ export default async function HomePage() {
       </section>
 
       {/* About / Bio Section */}
-      <section className="px-4 md:px-6 py-16 mx-auto max-w-3xl text-center page-enter">
+      <section className="px-6 md:px-8 py-16 mx-auto max-w-3xl text-center page-enter">
         <div className="mx-auto mb-6 h-px w-12 bg-[var(--border)]" />
         <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-[var(--text-secondary)] mb-6">
           {aboutHeading}
@@ -88,7 +88,7 @@ export default async function HomePage() {
 
       {/* Featured Albums Section */}
       {featuredAlbums.length > 0 && (
-        <section className="px-4 md:px-6 py-16 mx-auto max-w-7xl page-enter">
+        <section className="px-6 md:px-8 py-16 mx-auto max-w-7xl page-enter">
           <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-8">
             Recent Work
           </h2>

@@ -34,7 +34,7 @@ export default async function AboutPage() {
 
       {/* If no feature photo, just show the heading */}
       {!featurePhoto && (
-        <div className="pt-24 pb-8 px-4 md:px-6">
+        <div className="pt-24 pb-8 px-6 md:px-8">
           <h1 className="text-3xl md:text-5xl font-light tracking-tight text-[var(--color-foreground)] text-center">
             {aboutHeading}
           </h1>
@@ -42,7 +42,7 @@ export default async function AboutPage() {
       )}
 
       {/* Bio content */}
-      <section className="px-4 md:px-6 py-16 mx-auto max-w-3xl">
+      <section className="px-6 md:px-8 py-16 mx-auto max-w-3xl">
         <div className="space-y-6 text-center">
           {aboutText.split('\n').filter(p => p.trim()).map((paragraph, i) => (
             <p
