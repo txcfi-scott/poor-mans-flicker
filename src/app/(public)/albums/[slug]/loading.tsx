@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AlbumDetailLoading() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
+    <div className="mx-auto max-w-7xl px-6 py-12 md:px-8">
       {/* Back link */}
       <Skeleton className="mb-6 h-4 w-24" />
 
