@@ -72,10 +72,10 @@ export function Header({ siteTitle, transparent: transparentProp }: HeaderProps)
               Albums
             </Link>
             <Link
-              href="/playlists"
+              href="/about"
               className="text-sm font-medium text-muted hover:text-foreground transition-colors"
             >
-              Playlists
+              About
             </Link>
           </nav>
 
@@ -136,12 +136,12 @@ export function Header({ siteTitle, transparent: transparentProp }: HeaderProps)
             Albums
           </Link>
           <Link
-            href="/playlists"
+            href="/about"
             className="py-3 px-6 text-2xl font-semibold text-foreground hover:text-accent transition-colors"
             onClick={() => setMenuOpen(false)}
             tabIndex={menuOpen ? 0 : -1}
           >
-            Playlists
+            About
           </Link>
         </nav>
       </div>

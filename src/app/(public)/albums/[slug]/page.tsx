@@ -60,7 +60,7 @@ export default async function AlbumDetailPage({
         <h1 className="text-3xl md:text-4xl font-light tracking-tight text-foreground">{album.title}</h1>
 
         {album.description && (
-          <p className="mt-2 line-clamp-2 text-base text-muted">
+          <p className="mt-3 text-base leading-relaxed text-[var(--text-secondary)]">
             {album.description}
           </p>
         )}

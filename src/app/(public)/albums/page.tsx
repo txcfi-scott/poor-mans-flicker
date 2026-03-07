@@ -10,9 +10,12 @@ export default async function AlbumsPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 page-enter">
-      <h1 className="mb-8 text-3xl md:text-4xl font-light tracking-tight text-foreground">
+      <h1 className="mb-2 text-3xl md:text-4xl font-light tracking-tight text-foreground">
         Albums
       </h1>
+      <p className="mb-8 text-base text-[var(--text-secondary)]">
+        Browse collections of photos organized by theme, location, and moment.
+      </p>
 
       {albums.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">

@@ -4,7 +4,7 @@ import { Suspense, useState, FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 function LoginForm() {
-  const [token, setToken] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -21,7 +21,7 @@ function LoginForm() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ token: password }),
       });
 
       if (!res.ok) {
@@ -49,14 +49,14 @@ function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="token" className="sr-only">
+            <label htmlFor="password" className="sr-only">
               Password
             </label>
             <input
-              id="token"
+              id="password"
               type="password"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
               autoFocus
@@ -72,7 +72,7 @@ function LoginForm() {
 
           <button
             type="submit"
-            disabled={loading || !token}
+            disabled={loading || !password}
             className="w-full rounded-lg bg-accent hover:bg-accent-hover text-white px-4 py-3 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Signing in...' : 'Sign In'}

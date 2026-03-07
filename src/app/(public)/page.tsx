@@ -70,6 +70,18 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* About / Bio Section */}
+      <section className="px-4 md:px-6 py-16 mx-auto max-w-3xl text-center page-enter">
+        <div className="mx-auto mb-6 h-px w-12 bg-[var(--border)]" />
+        <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-[var(--text-secondary)] mb-6">
+          About the Photographer
+        </h2>
+        <p className="text-lg leading-relaxed text-[var(--text-secondary)]">
+          Chris Harding is a photographer based in the Pacific Northwest, drawn to landscapes, aviation, and the quiet moments in between. With an eye for natural light and composition, his work celebrates the beauty found in everyday scenes.
+        </p>
+        <div className="mx-auto mt-6 h-px w-12 bg-[var(--border)]" />
+      </section>
+
       {/* Featured Albums Section */}
       {featuredAlbums.length > 0 && (
         <section className="px-4 md:px-6 py-16 mx-auto max-w-7xl page-enter">
