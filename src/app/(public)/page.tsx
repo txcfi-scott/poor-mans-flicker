@@ -40,7 +40,7 @@ export default async function HomePage() {
   const featuredAlbums = albumsData.slice(0, 6);
 
   return (
-    <main>
+    <div>
       {/* Hero Section — negative margin pulls it behind the sticky header */}
       <section className="relative -mt-16">
         <HeroCarousel photos={heroData} intervalMs={heroInterval} />
@@ -119,6 +119,6 @@ export default async function HomePage() {
           )}
         </section>
       )}
-    </main>
+    </div>
   );
 }

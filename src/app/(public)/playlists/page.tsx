@@ -9,7 +9,7 @@ export default async function PlaylistsPage() {
   const playlists = await getPlaylists(false);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 page-enter">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 page-enter">
       <h1 className="mb-8 text-3xl md:text-4xl font-light tracking-tight text-foreground">
         Playlists
       </h1>
@@ -58,6 +58,6 @@ export default async function PlaylistsPage() {
           ))}
         </div>
       )}
-    </main>
+    </div>
   );
 }

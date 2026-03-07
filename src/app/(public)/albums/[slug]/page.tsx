@@ -35,7 +35,7 @@ export default async function AlbumDetailPage({
   });
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-6 py-8 md:px-8 page-enter">
+    <div className="mx-auto w-full max-w-7xl px-6 py-8 md:px-8 page-enter">
       {/* Back link */}
       <Link
         href="/albums"
@@ -91,6 +91,6 @@ export default async function AlbumDetailPage({
           <p className="text-muted-foreground">No photos in this album yet.</p>
         </div>
       )}
-    </main>
+    </div>
   );
 }

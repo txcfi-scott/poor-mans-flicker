@@ -11,7 +11,7 @@ export default async function AlbumsPage() {
   const albums = await getAlbums(false);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-12 md:px-8 page-enter">
+    <div className="mx-auto max-w-7xl px-6 py-12 md:px-8 page-enter">
       <h1 className="mb-2 text-3xl md:text-4xl font-light tracking-tight text-foreground">
         Albums
       </h1>
@@ -54,6 +54,6 @@ export default async function AlbumsPage() {
           ))}
         </div>
       )}
-    </main>
+    </div>
   );
 }

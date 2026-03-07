@@ -33,7 +33,7 @@ export default async function PlaylistDetailPage({
   }));
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6 page-enter">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6 page-enter">
       {/* Back link */}
       <Link
         href="/playlists"
@@ -89,6 +89,6 @@ export default async function PlaylistDetailPage({
           <p className="text-muted-foreground">No photos in this playlist yet.</p>
         </div>
       )}
-    </main>
+    </div>
   );
 }
