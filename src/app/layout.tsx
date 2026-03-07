@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Poor Man's Flickr",
-  description: "A self-hosted photo gallery",
+  title: "Chris Harding Photography",
+  description: "Aviation, landscapes, and urban photography",
 };
 
 export default function RootLayout({
