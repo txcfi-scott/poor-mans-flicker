@@ -22,7 +22,7 @@ export function Footer() {
             </p>
             <a
               href="/login"
-              className="text-[10px] text-[var(--text-secondary)]/50 hover:text-[var(--text-secondary)] transition-colors"
+              className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
               Admin
             </a>
