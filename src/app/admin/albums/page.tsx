@@ -7,7 +7,7 @@ export default async function AdminAlbumsPage() {
   const albums = await getAlbums(true); // include private
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-heading font-bold">Albums</h1>
         <a

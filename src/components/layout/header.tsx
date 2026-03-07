@@ -54,7 +54,7 @@ export function Header({ siteTitle, transparent: transparentProp }: HeaderProps)
   return (
     <>
       <header className={`h-16 transition-all duration-300 ${bgClass}`}>
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6">
+        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 md:px-8">
           {/* Site title */}
           <Link
             href="/"
