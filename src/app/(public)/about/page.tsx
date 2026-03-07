@@ -43,7 +43,7 @@ export default async function AboutPage() {
 
       {/* Bio content */}
       <section className="px-4 md:px-6 py-16 mx-auto max-w-3xl">
-        <div className="space-y-6">
+        <div className="space-y-6 text-center">
           {aboutText.split('\n').filter(p => p.trim()).map((paragraph, i) => (
             <p
               key={i}
