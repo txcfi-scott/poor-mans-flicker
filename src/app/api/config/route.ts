@@ -58,6 +58,20 @@ export async function PATCH(request: NextRequest) {
     updates.trashRetentionDays = val;
   }
 
+  if (body.aboutHeading !== undefined) {
+    if (typeof body.aboutHeading !== 'string') {
+      return apiError('About heading must be a string', 'INVALID_ABOUT_HEADING', 400);
+    }
+    updates.aboutHeading = body.aboutHeading.trim();
+  }
+
+  if (body.aboutText !== undefined) {
+    if (typeof body.aboutText !== 'string') {
+      return apiError('About text must be a string', 'INVALID_ABOUT_TEXT', 400);
+    }
+    updates.aboutText = body.aboutText.trim();
+  }
+
   if (Object.keys(updates).length === 0) {
     return apiError('No valid fields to update', 'NO_FIELDS', 400);
   }

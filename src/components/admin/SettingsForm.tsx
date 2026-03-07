@@ -8,6 +8,8 @@ interface SiteConfig {
   heroIntervalMs: number;
   slideshowDefaultIntervalMs: number;
   trashRetentionDays: number;
+  aboutHeading: string;
+  aboutText: string;
 }
 
 export default function SettingsForm({ initialConfig }: { initialConfig: SiteConfig }) {
@@ -30,6 +32,8 @@ export default function SettingsForm({ initialConfig }: { initialConfig: SiteCon
           heroIntervalMs: config.heroIntervalMs,
           slideshowDefaultIntervalMs: config.slideshowDefaultIntervalMs,
           trashRetentionDays: config.trashRetentionDays,
+          aboutHeading: config.aboutHeading,
+          aboutText: config.aboutText,
         }),
       });
 
@@ -89,6 +93,38 @@ export default function SettingsForm({ initialConfig }: { initialConfig: SiteCon
           className="w-full px-4 py-2.5 rounded-lg bg-surface-hover border border-border text-foreground text-sm placeholder-muted-foreground focus:outline-none focus:border-accent transition-colors resize-none"
           placeholder="A photography portfolio"
         />
+      </div>
+
+      {/* About Heading */}
+      <div>
+        <label htmlFor="aboutHeading" className="block text-sm font-medium text-foreground mb-2">
+          About Heading
+        </label>
+        <input
+          id="aboutHeading"
+          type="text"
+          value={config.aboutHeading}
+          onChange={(e) => setConfig({ ...config, aboutHeading: e.target.value })}
+          className="w-full px-4 py-2.5 rounded-lg bg-surface-hover border border-border text-foreground text-sm placeholder-muted-foreground focus:outline-none focus:border-accent transition-colors"
+          placeholder="About the Photographer"
+        />
+        <p className="text-muted-foreground text-xs mt-1">Heading shown above the bio on the home page.</p>
+      </div>
+
+      {/* About Text */}
+      <div>
+        <label htmlFor="aboutText" className="block text-sm font-medium text-foreground mb-2">
+          About Text
+        </label>
+        <textarea
+          id="aboutText"
+          value={config.aboutText}
+          onChange={(e) => setConfig({ ...config, aboutText: e.target.value })}
+          rows={5}
+          className="w-full px-4 py-2.5 rounded-lg bg-surface-hover border border-border text-foreground text-sm placeholder-muted-foreground focus:outline-none focus:border-accent transition-colors resize-none"
+          placeholder="A short bio about the photographer..."
+        />
+        <p className="text-muted-foreground text-xs mt-1">Bio paragraph displayed on the home page.</p>
       </div>
 
       {/* Hero Interval */}

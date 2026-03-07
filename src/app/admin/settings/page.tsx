@@ -10,6 +10,8 @@ export default async function SettingsPage() {
     heroIntervalMs: config?.heroIntervalMs ?? 5000,
     slideshowDefaultIntervalMs: config?.slideshowDefaultIntervalMs ?? 4000,
     trashRetentionDays: config?.trashRetentionDays ?? 30,
+    aboutHeading: config?.aboutHeading ?? 'About the Photographer',
+    aboutText: config?.aboutText ?? 'Chris Harding is a photographer based in the Pacific Northwest, drawn to landscapes, aviation, and the quiet moments in between. With an eye for natural light and composition, his work celebrates the beauty found in everyday scenes.',
   };
 
   return (

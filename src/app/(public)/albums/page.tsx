@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getAlbums } from '@/lib/db/queries/albums';
 import { AlbumCard } from '@/components/gallery/album-card';
 

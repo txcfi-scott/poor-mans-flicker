@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { getHeroAlbums, getAlbums } from '@/lib/db/queries/albums';
 import { getFavoritePhotos } from '@/lib/db/queries/photos';
@@ -21,6 +23,8 @@ export default async function HomePage() {
   const heroInterval = config?.heroIntervalMs ?? 5000;
   const siteTitle = config?.siteTitle ?? 'My Photography';
   const siteDescription = config?.siteDescription ?? 'A photography portfolio';
+  const aboutHeading = config?.aboutHeading ?? 'About the Photographer';
+  const aboutText = config?.aboutText ?? 'Chris Harding is a photographer based in the Pacific Northwest, drawn to landscapes, aviation, and the quiet moments in between. With an eye for natural light and composition, his work celebrates the beauty found in everyday scenes.';
 
   // Resolve URLs server-side (can't pass functions to client components)
   const heroData: HeroPhoto[] = heroPhotos.map((p) => ({
@@ -74,10 +78,10 @@ export default async function HomePage() {
       <section className="px-4 md:px-6 py-16 mx-auto max-w-3xl text-center page-enter">
         <div className="mx-auto mb-6 h-px w-12 bg-[var(--border)]" />
         <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-[var(--text-secondary)] mb-6">
-          About the Photographer
+          {aboutHeading}
         </h2>
         <p className="text-lg leading-relaxed text-[var(--text-secondary)]">
-          Chris Harding is a photographer based in the Pacific Northwest, drawn to landscapes, aviation, and the quiet moments in between. With an eye for natural light and composition, his work celebrates the beauty found in everyday scenes.
+          {aboutText}
         </p>
         <div className="mx-auto mt-6 h-px w-12 bg-[var(--border)]" />
       </section>

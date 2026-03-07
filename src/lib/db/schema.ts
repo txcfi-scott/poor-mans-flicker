@@ -58,6 +58,8 @@ export const siteConfig = sqliteTable('site_config', {
   themeFontHeading: text('theme_font_heading').notNull().default('Inter'),
   themeFontBody: text('theme_font_body').notNull().default('Inter'),
   trashRetentionDays: integer('trash_retention_days').notNull().default(30),
+  aboutHeading: text('about_heading').notNull().default('About the Photographer'),
+  aboutText: text('about_text').notNull().default('Chris Harding is a photographer based in the Pacific Northwest, drawn to landscapes, aviation, and the quiet moments in between. With an eye for natural light and composition, his work celebrates the beauty found in everyday scenes.'),
 });
 
 export const playlists = sqliteTable('playlists', {
